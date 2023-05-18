@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use StepStone\PDFreactor\PDFreactor;
 
 class ResumeController extends Controller
 {
-    public function show(string $id): View
+    public function show(string $id)
     {
-
-        return view();
+        $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
+        $config = [
+            'document'  => view('welcome')->render(),
+        ];
+        $result = $pdfreactor->convertAsBinary($config);
+        header("Content-Type: application/pdf");
+        echo $result;
     }
 
 }

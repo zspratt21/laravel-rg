@@ -26,3 +26,8 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+/**
+ * Resume PDF Callback Route.
+ */
+Route::get('resume/{id}', 'App\Http\Controllers\ResumeController@show');
