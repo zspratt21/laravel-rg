@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\EntityController;
+use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\ResumeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,4 +33,20 @@ Route::middleware([
 /**
  * Resume PDF Callback Route.
  */
-Route::get('resume/{id}', 'App\Http\Controllers\ResumeController@show');
+Route::get('resume/{user_id}', [ResumeController::class, 'show']);
+
+/**
+ * Entity Callback Routes.
+ */
+Route::get('/entity/create', [EntityController::class, 'createForm']);
+Route::post('/entity/create', [EntityController::class, 'createInstance'])->name('entityCreateInstance');
+Route::get('/entity/{entity_id}', [EntityController::class, 'show']);
+Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
+
+/**
+ * Experience Callback Routes.
+ */
+Route::get('/experience/create', [ExperienceController::class, 'createForm']);
+Route::post('/experience/create', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
+Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
+Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
