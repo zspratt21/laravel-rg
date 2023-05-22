@@ -26,8 +26,6 @@ class ExperienceController extends Controller
     }
 
     public function createInstance(Request $request){
-        // @todo manually add logged in user's id to new experience instance
-        // @todo complete form template and process data
         dump($request);
         dump($request->get('title'));
         dump($request->get('description'));
