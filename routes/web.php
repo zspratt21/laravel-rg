@@ -3,6 +3,7 @@
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,13 @@ Route::get('/entity/create', [EntityController::class, 'createForm']);
 Route::post('/entity/create', [EntityController::class, 'createInstance'])->name('entityCreateInstance');
 Route::get('/entity/{entity_id}', [EntityController::class, 'show']);
 Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
+
+/**
+ * Skill Callback Routes.
+ */
+Route::get('/skill/create', [SkillController::class, 'createForm']);
+Route::post('/skill/create', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
+Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
 
 /**
  * Experience Callback Routes.
