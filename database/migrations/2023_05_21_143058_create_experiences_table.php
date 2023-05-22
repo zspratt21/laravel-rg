@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->text('description');
             $table->date('date_started');
             $table->date('date_ended');
             $table->integer('entity');
