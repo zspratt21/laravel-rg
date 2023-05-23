@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SkillLink extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'skill',
+        'user',
+    ];
 }
