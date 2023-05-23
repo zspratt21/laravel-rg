@@ -9,7 +9,7 @@ use StepStone\PDFreactor\PDFreactor;
 class EntityController extends Controller
 {
     public function createForm(){
-        return view('entity/create');
+        return view('Entity/create');
     }
 
     public function createInstance(Request $request){
@@ -39,9 +39,10 @@ class EntityController extends Controller
         $vars = [
             'name' => $entity->name,
             'description' => $entity->description,
-            'logo' => $entity->logo,
+            'logo' => url($entity->logo),
         ];
-        return view('entity/show', $vars);
+        dump($vars);
+        return view('Entity/show', $vars);
     }
 
     public function print(int $entity_id){

@@ -22,7 +22,7 @@ class ExperienceController extends Controller
             ],
             'entity_options' => $entity_options,
         ];
-        return view('experience/create', $vars);
+        return view('Experience/create', $vars);
     }
 
     public function createInstance(Request $request){

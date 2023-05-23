@@ -4,6 +4,7 @@ use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\SocialMediaPlatformController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,3 +59,11 @@ Route::get('/experience/create', [ExperienceController::class, 'createForm']);
 Route::post('/experience/create', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
 Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
 Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
+
+/**
+ * Social Media Platform Callback Routes.
+ */
+Route::get('/social/create', [SocialMediaPlatformController::class, 'createForm']);
+Route::post('/social/create', [SocialMediaPlatformController::class, 'createInstance'])->name('socialCreateInstance');
+Route::get('/social/{social_id}', [SocialMediaPlatformController::class, 'show']);
+Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, 'print']);
