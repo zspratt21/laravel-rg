@@ -7,5 +7,4 @@
 {{$description}}
 
 <img src="{{$logo}}">
-{{--{{$logo}}--}}
 @endsection

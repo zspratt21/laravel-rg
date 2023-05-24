@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SkillLinkController;
@@ -76,5 +77,11 @@ Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, '
  */
 Route::get('/create/social_link', [SocialMediaLinkController::class, 'createForm']);
 Route::post('/create/social_link', [SocialMediaLinkController::class, 'createInstance'])->name('socialLinkCreateInstance');
+
+/**
+ * Milestone Callback Routes.
+ */
+Route::get('/create/milestone', [MilestoneController::class, 'createForm']);
+Route::post('/create/milestone', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
 
 
