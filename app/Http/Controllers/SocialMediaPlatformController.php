@@ -13,7 +13,7 @@ class SocialMediaPlatformController extends Controller
 
     public function createInstance(Request $request){
         $request->validate([
-            'logo' => 'required|mimes:png,jpg,svg,jpeg|max:2048'
+            'logo' => 'required|mimes:png,jpg,svg,jpeg,webp|max:2048'
         ]);
         dump($request);
         dump($request->file('logo'));

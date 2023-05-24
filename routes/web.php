@@ -5,6 +5,7 @@ use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SkillLinkController;
+use App\Http\Controllers\SocialMediaLinkController;
 use App\Http\Controllers\SocialMediaPlatformController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,5 +70,11 @@ Route::get('/create/social', [SocialMediaPlatformController::class, 'createForm'
 Route::post('/create/social', [SocialMediaPlatformController::class, 'createInstance'])->name('socialCreateInstance');
 Route::get('/social/{social_id}', [SocialMediaPlatformController::class, 'show']);
 Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, 'print']);
+
+/**
+ * Social Media Link Callback Routes.
+ */
+Route::get('/create/social_link', [SocialMediaLinkController::class, 'createForm']);
+Route::post('/create/social_link', [SocialMediaLinkController::class, 'createInstance'])->name('socialLinkCreateInstance');
 
 
