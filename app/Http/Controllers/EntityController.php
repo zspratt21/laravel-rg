@@ -41,7 +41,6 @@ class EntityController extends Controller
             'description' => $entity->description,
             'logo' => url($entity->logo),
         ];
-        dump($vars);
         return view('Entity/show', $vars);
     }
 
@@ -49,7 +48,6 @@ class EntityController extends Controller
         $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
         $config = [
             'document'  => $this->show($entity_id)->render(),
-//            'baseURL' => 'http://192.168.186.227:8000/'
         ];
         $result = $pdfreactor->convertAsBinary($config);
         header("Content-Type: application/pdf");
