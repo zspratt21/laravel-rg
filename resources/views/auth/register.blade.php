@@ -34,6 +34,21 @@
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             </div>
 
+            <div class="mt-4">
+                <x-label class="custom-file-label" for="introduction">Resume Introduction</x-label>
+                <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction"></x-textarea>
+            </div>
+
+            <div class="mt-4">
+                <x-label class="custom-file-label" for="profile_photo">Profile Photo</x-label>
+                <x-input type="file" name="profile_photo" class="block mt-1 w-full" id="profile_photo"/>
+            </div>
+
+            <div class="mt-4">
+                <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
+                <x-input type="file" name="cover_photo" class="block mt-1 w-full" id="cover_photo"/>
+            </div>
+
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">
                     <x-label for="terms">
