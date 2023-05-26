@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class SkillController extends Controller
 {
     public function createForm(){
-        return view('skill/create');
+        return view('Skill/create');
     }
 
     public function createInstance(Request $request){
@@ -39,6 +39,6 @@ class SkillController extends Controller
             'description' => $skill->description,
             'icon' => $skill->icon,
         ];
-        return view('skill/show', $vars);
+        return view('Skill/show', $vars);
     }
 }
