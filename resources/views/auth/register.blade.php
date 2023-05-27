@@ -14,11 +14,6 @@
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
-            <div>
-                <x-label for="mobile" value="{{ __('Mobile Number') }}" />
-                <x-input id="mobile" class="block mt-1 w-full" type="text" name="mobile" :value="old('mobile')" required autofocus autocomplete="mobile" />
-            </div>
-
             <div class="mt-4">
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
@@ -32,21 +27,6 @@
             <div class="mt-4">
                 <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
                 <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label class="custom-file-label" for="introduction">Resume Introduction</x-label>
-                <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction"></x-textarea>
-            </div>
-
-            <div class="mt-4">
-                <x-label class="custom-file-label" for="profile_photo">Profile Photo</x-label>
-                <x-input type="file" name="profile_photo" class="block mt-1 w-full" id="profile_photo"/>
-            </div>
-
-            <div class="mt-4">
-                <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
-                <x-input type="file" name="cover_photo" class="block mt-1 w-full" id="cover_photo"/>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

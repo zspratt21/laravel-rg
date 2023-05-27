@@ -48,6 +48,7 @@ class EntityController extends Controller
         $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
         $config = [
             'document'  => $this->show($entity_id)->render(),
+            'debugSettings' => ['all' => TRUE],
         ];
         $result = $pdfreactor->convertAsBinary($config);
         header("Content-Type: application/pdf");
