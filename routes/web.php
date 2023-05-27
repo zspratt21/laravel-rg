@@ -4,6 +4,7 @@ use App\Http\Controllers\EntityController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\ResumeProfileController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\SkillLinkController;
 use App\Http\Controllers\SocialMediaLinkController;
@@ -75,8 +76,8 @@ Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, '
 /**
  * Social Media Link Callback Routes.
  */
-Route::get('/create/social_link', [SocialMediaLinkController::class, 'createForm']);
-Route::post('/create/social_link', [SocialMediaLinkController::class, 'createInstance'])->name('socialLinkCreateInstance');
+Route::get('/create/social-link', [SocialMediaLinkController::class, 'createForm']);
+Route::post('/create/social-link', [SocialMediaLinkController::class, 'createInstance'])->name('socialLinkCreateInstance');
 
 /**
  * Milestone Callback Routes.
@@ -84,4 +85,7 @@ Route::post('/create/social_link', [SocialMediaLinkController::class, 'createIns
 Route::get('/create/milestone', [MilestoneController::class, 'createForm']);
 Route::post('/create/milestone', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
 
+//resumeProfileUpdate
+Route::get('/edit/resume-profile', [ResumeProfileController::class, 'editForm']);
+Route::post('/edit/resume-profile', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');
 

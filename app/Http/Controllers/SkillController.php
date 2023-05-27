@@ -25,6 +25,7 @@ class SkillController extends Controller
         $skill = new Skill();
         $skill->name = $request->get('name');
         $skill->description = $request->get('description');
+        $skill->url = $request->get('url');
         $skill->icon = '/storage/' . $filePath;
         $skill->save();
         return back()

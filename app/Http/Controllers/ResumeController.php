@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\Experience;
 use App\Models\Milestone;
+use App\Models\ResumeProfile;
 use App\Models\Skill;
 use App\Models\SkillLink;
 use App\Models\SocialMediaLink;
@@ -18,19 +19,16 @@ class ResumeController extends Controller
     {
         // @todo make custom profile model for introduction, mobile, address and cover photo. Include edit form in jetstream profile form/page
 
-        $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
-        $config = [
-            'document'  => view('welcome')->render(),
-        ];
         $user = Auth::user();
+        $profile = ResumeProfile::query()->where('user', '=', $user->id)->first();
         $vars = [
-            'mobile' => 'stub',
+            'mobile' => $profile->mobile,
             'profile_photo' => url('storage/' . $user->profile_photo_path),
-            'cover_photo' => 'stub',
-            'introduction' => 'stub',
+            'cover_photo' => url($profile->cover_photo),
+            'introduction' => $profile->introduction,
             'name' => $user->name,
             'email' => $user->email,
-            'address' => 'stub',
+            'address' => $profile->address,
             'socials' => [],
             'skills' => [],
             'experiences' => [],
@@ -47,29 +45,27 @@ class ResumeController extends Controller
                 }
             }
         }
-        // @todo skills
-        //   query skill links and grab url and logo of linked skills
         $linked_skills = SkillLink::query()->where('user', '=', $user->id)->get()->all();
-        dump($linked_skills);
+//        dump($linked_skills);
         foreach ($linked_skills as $linked_skill) {
             $skill = Skill::query()->where('id', '=', $linked_skill->skill)->first();
-            dump($skill);
+//            dump($skill);
             if (!empty($skill)) {
                 $vars['skills'][] = [
                     'name' => $skill->name,
                     'icon' => url($skill->icon),
-                    'url' => 'stub',
+                    'url' => $skill->url,
                 ];
             }
         }
         $linked_experiences = Experience::query()->where('user', '=', $user->id)->get()->all();
-        dump($linked_experiences);
+//        dump($linked_experiences);
         foreach ($linked_experiences as $experience) {
             $entity = Entity::query()->where('id', '=', $experience->entity)->first();
-            dump($entity);
+//            dump($entity);
             $milestone_data = [];
             $milestones = Milestone::query()->where('experience', $experience->id)->get()->all();
-            dump($milestones);
+//            dump($milestones);
             if (!empty($milestones)) {
                 foreach ($milestones as $milestone) {
                     $milestone_data[] = [
@@ -89,13 +85,19 @@ class ResumeController extends Controller
                 'milestones' => $milestone_data,
             ];
 
-            dump($experience_data);
-            $vars['experiences'][$experience->type][] = $experience_data;
+//            dump($experience_data);
+            $vars['experiences'][ucfirst($experience->type)][] = $experience_data;
         }
-        dump($vars);
-//        $result = $pdfreactor->convertAsBinary($config);
-//        header("Content-Type: application/pdf");
-//        echo $result;
+//        dump($vars);
+//        return view('Resume/og', $vars);
+        $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
+        $config = [
+            'document'  => view('Resume/og', $vars)->render(),
+            'debugSettings' => ['all' => TRUE],
+        ];
+        $result = $pdfreactor->convertAsBinary($config);
+        header("Content-Type: application/pdf");
+        echo $result;
     }
 
 }
