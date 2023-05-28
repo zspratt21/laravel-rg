@@ -10,12 +10,13 @@ use App\Models\Skill;
 use App\Models\SkillLink;
 use App\Models\SocialMediaLink;
 use App\Models\SocialMediaPlatform;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use StepStone\PDFreactor\PDFreactor;
 
 class ResumeController extends Controller
 {
-    public function show(string $id)
+    public function show()
     {
         // @todo make custom profile model for introduction, mobile, address and cover photo. Include edit form in jetstream profile form/page
 
@@ -78,8 +79,8 @@ class ResumeController extends Controller
             $experience_data = [
                 'title' => $experience->title,
                 'description' => $experience->description,
-                'date_started' => $experience->date_started,
-                'date_ended' => !empty($experience->date_ended) ? $experience->date_ended : 'Present',
+                'date_started' => Carbon::parse($experience->date_started)->format('F Y'),
+                'date_ended' => !empty($experience->date_ended) ? Carbon::parse($experience->date_ended)->format('F Y') : 'Present',
                 'entity_logo' => url($entity->logo),
                 'entity_name' => $entity->name,
                 'milestones' => $milestone_data,
@@ -89,14 +90,16 @@ class ResumeController extends Controller
             $vars['experiences'][ucfirst($experience->type)][] = $experience_data;
         }
 //        dump($vars);
-//        return view('Resume/og', $vars);
         $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
         $config = [
             'document'  => view('Resume/og', $vars)->render(),
             'debugSettings' => ['all' => TRUE],
         ];
+//        dump(file_get_contents('/resources/resume/og/style.css'));
+//        return view('Resume/og', $vars);
         $result = $pdfreactor->convertAsBinary($config);
         header("Content-Type: application/pdf");
+        header('Content-Disposition: inline; filename="' . $user->name . ' - Resume - ' . date('U') . '.pdf"');
         echo $result;
     }
 

@@ -39,7 +39,7 @@ Route::middleware([
 /**
  * Resume PDF Callback Route.
  */
-Route::get('resume/{user_id}', [ResumeController::class, 'show']);
+Route::get('resume', [ResumeController::class, 'show']);
 
 /**
  * Entity Callback Routes.

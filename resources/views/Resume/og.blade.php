@@ -2,108 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>First M. Last</title>
-    <style>
-
-        @page {
-            counter-increment: page;
-
-            -ro-scale-content: none;
-            hyphens: auto;
-
-            size: A4 portrait;
-            margin:0mm 0mm 0mm 0mm !important;
-
-        }
-        html{
-            color: #909294;
-            background: #212529;
-        }
-
-        body {
-            margin: 40px;
-            font-family: "Adobe Caslon Pro", "Minion Pro", serif;
-            font-size: 12pt;
-        }
-
-        a{
-            color: inherit;
-        }
-
-        header {
-            font-family: "Trajan Pro", serif;
-            padding: 1px 20px 20px 20px;
-            color: white;
-        }
-
-        header h1 {
-            font-size: 20pt;
-            letter-spacing: 2pt;
-            border-bottom: 1px solid white;
-            margin-bottom: 4px;
-        }
-
-        header span {
-            font-size: 10pt;
-            float: right;
-        }
-
-        header span.name{
-            font-size: 45px;
-        }
-
-        section h2 {
-            font-family: "Trajan Pro", serif;
-            font-size: 14pt;
-        }
-
-        section p {
-            margin-left: 40px;
-        }
-
-        section#statement p {
-            margin-left: 0;
-            text-align: justify;
-            padding-bottom: 0;
-            margin-bottom: -15px;
-        }
-
-        section.coverletter {
-            margin-top: 40px;
-        }
-
-        section.coverletter p {
-            margin-left: 0px;
-        }
-
-        section ul {
-            list-style-type: circle;
-        }
-
-        .pagebreak {
-            page-break-before: always;
-        }
-
-        table, tr {
-            page-break-before: auto;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td {
-            padding-bottom: 10px !important;
-        }
-        td.no-space{
-            padding-bottom: 0 !important;;
-        }
-
-        span.contact-info{
-            font-size: 15px;
-        }
-    </style>
+    <title>{{$name . ' - Resume - ' . date('M Y')}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @vite(['resources/css/resume/og/style.css'])
 </head>
 <body>
 <div style="
@@ -129,11 +30,11 @@
             </h1>
             <span class="contact-info">
                 <table>
-                    <td><img style="padding: 0 3px 0 3px" height="20px" src="/Media/Images/Static%20Assets/Icons/location-pin.png"></td>
+                    <td><i class="fa-solid fa-location-dot" style="padding: 0 3px 0 3px; height: 20px; color: crimson;"></i></td>
                     <td>{{ $address }}</td>
-                    <td><img style="padding: 0 3px 0 3px" height="20px" src="/Media/Images/Static%20Assets/Icons/1500335.png"></td>
+                    <td><i class="fa-solid fa-phone-volume" style="padding: 0 3px 0 3px; height: 20px; color: limegreen;"></i></td>
                     <td>{{ $mobile }}</td>
-                    <td><img style="padding: 0 3px 0 3px" height="20px" src="/Media/Images/Static%20Assets/Icons/2343735.png"></td>
+                    <td><i class="fa-solid fa-envelope" style="padding: 0 3px 0 3px; height: 20px; color: sandybrown;"></i></td>
                     <td><a href="mailto:{{ $email }}" class="text-white ml-2">{{ $email }}</a></td>
                 </table>
             </span>
@@ -164,7 +65,7 @@
     <section>
         <div style="background: #393C3F; border-radius: 15px; padding: 20px; padding-bottom: 0; margin: 0px -20px 0 -20px">
             @foreach($experience_type as $experience)
-                <div style="padding: 20px; padding: 20px; padding-bottom: 0; margin: 0px -20px 0 -20px">
+                <div style="padding: 20px 20px 0;margin: 0px -20px 0 -20px">
                     <table>
                         <tr>
                             <td class="no-space" style="width: 200px !important;"><img height="auto" width="auto" style=" max-width: 200px !important; max-height: 100px !important" src="{{ $experience['entity_logo'] }}"></td>
@@ -204,29 +105,30 @@
     @endforeach
 </section>
 <br><br><br>
-{{--<footer class="bg-dark text-white-50 text-center mt-5 p-2" style="display:block; position: absolute !important; bottom: -5px !important; width: 100% !important; margin-left: -35px !important; text-align: center !important;">--}}
-{{--    <table>--}}
-{{--        <tr>--}}
-{{--            <td style="font-size: 18px !important;">&copy; {{ "now"|date("Y") }} {{ $name }} - <a class="text-white-50" href="https://github.com" target="_blank">Dynamically Generated HTML CV</a> | Made with </td>--}}
-{{--            <td>--}}
-{{--                <a href="https://en.wikipedia.org/wiki/HTML5">--}}
-{{--                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="/Media/Images/Static%20Assets/Footer/html.png" height="30px" width="auto">--}}
-{{--                </a>--}}
-{{--                <a href="https://en.wikipedia.org/wiki/CSS">--}}
-{{--                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="/Media/Images/Static%20Assets/Footer/css-3.png" height="30px" width="auto">--}}
-{{--                </a>--}}
-{{--                <a href="https://twig.symfony.com/">--}}
-{{--                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="/Media/Images/Static%20Assets/Footer/46407973-3c5dbf80-c72e-11e8-947c-d1fdaaa28f73.png" height="30px" width="auto">--}}
-{{--                </a>--}}
-{{--                <a href="https://www.pdfreactor.com/">--}}
-{{--                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="/Media/Images/Static%20Assets/Footer/pr-logo-disc.png" height="30px" width="auto">--}}
-{{--                </a>--}}
-{{--                <a href="https://pimcore.com/">--}}
-{{--                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="/Media/Images/Static%20Assets/Footer/1200px-Pimcore-logo-5.svg.png" height="30px" width="auto">--}}
-{{--                </a>--}}
+<footer class="bg-dark text-white-50 text-center mt-5 p-2" style="display:block; position: absolute !important; bottom: -5px !important; width: 100% !important; margin-left: -35px !important; text-align: center !important;">
+    <table>
+        <tr>
+            <td style="font-size: 18px !important;"><span style="padding-bottom: 10px">&copy; {{ date("Y") }} {{ $name }} - <a class="text-white-50" href="https://github.com" target="_blank">Dynamically Generated HTML CV</a> | Made with</span>
 {{--            </td>--}}
-{{--        </tr>--}}
-{{--    </table>--}}
-{{--</footer>--}}
+{{--            <td>--}}
+                <a href="https://en.wikipedia.org/wiki/HTML5">
+                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" height="30px" width="auto">
+                </a>
+                <a href="https://en.wikipedia.org/wiki/CSS">
+                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" height="30px" width="auto">
+                </a>
+                <a href="https://laravel.com/docs/10.x/blade">
+                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="https://cdn.cdnlogo.com/logos/b/87/blade-ui-kit.svg" height="30px" width="auto">
+                </a>
+                <a href="https://www.pdfreactor.com/">
+                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="https://cdn.pdfreactor.com/wp-content/uploads/images/logos/pr-logo-disc.png" height="30px" width="auto">
+                </a>
+                <a href="https://laravel.com/">
+                    <img style="padding: 5px 5px 0px 5px; margin-bottom: -10px" src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg" height="30px" width="auto">
+                </a>
+            </td>
+        </tr>
+    </table>
+</footer>
 </body>
 </html>

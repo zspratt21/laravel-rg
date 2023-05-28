@@ -1,0 +1,98 @@
+@page {
+    counter-increment: page;
+
+    -ro-scale-content: none;
+    hyphens: auto;
+
+    size: A4 portrait;
+    margin:0mm 0mm 0mm 0mm !important;
+
+}
+html{
+    color: #909294;
+    background: #212529;
+}
+
+body {
+    margin: 40px;
+    font-family: "Adobe Caslon Pro", "Minion Pro", serif;
+    font-size: 12pt;
+}
+
+a{
+    color: inherit;
+}
+
+header {
+    font-family: "Trajan Pro", serif;
+    padding: 1px 20px 20px 20px;
+    color: white;
+}
+
+header h1 {
+    font-size: 20pt;
+    letter-spacing: 2pt;
+    border-bottom: 1px solid white;
+    margin-bottom: 4px;
+}
+
+header span {
+    font-size: 10pt;
+    float: right;
+}
+
+header span.name{
+    font-size: 45px;
+}
+
+section h2 {
+    font-family: "Trajan Pro", serif;
+    font-size: 14pt;
+}
+
+section p {
+    margin-left: 40px;
+}
+
+section#statement p {
+    margin-left: 0;
+    text-align: justify;
+    padding-bottom: 0;
+    margin-bottom: -15px;
+}
+
+section.coverletter {
+    margin-top: 40px;
+}
+
+section.coverletter p {
+    margin-left: 0px;
+}
+
+section ul {
+    list-style-type: circle;
+}
+
+.pagebreak {
+    page-break-before: always;
+}
+
+table, tr {
+    page-break-before: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    padding-bottom: 10px !important;
+}
+td.no-space{
+    padding-bottom: 0 !important;;
+}
+
+span.contact-info{
+    font-size: 15px;
+}
