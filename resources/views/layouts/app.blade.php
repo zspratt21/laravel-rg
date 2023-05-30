@@ -16,6 +16,19 @@
 
         <!-- Styles -->
         @livewireStyles
+        {{-- @page margins for debugging only --}}
+        <style type="text/css">
+            @page {
+                counter-increment: page;
+
+                -ro-scale-content: none;
+                hyphens: auto;
+
+                size: A4 portrait;
+                margin:0mm 0mm 0mm 0mm !important;
+
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <x-banner />

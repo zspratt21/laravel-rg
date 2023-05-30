@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class ResumeProfileController extends Controller
 {
     public function editForm() {
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
         $vars = [
             'address' => $profile->address,
@@ -22,7 +25,7 @@ class ResumeProfileController extends Controller
     public function editInstance(Request $request){
         if (!empty($request->file('cover_photo'))){
             $request->validate([
-                'cover_photo' => 'required|mimes:png,jpg,svg,jpeg|max:2048'
+                'cover_photo' => 'required|image|max:2048'
             ]);
         }
         $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();

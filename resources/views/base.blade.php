@@ -27,7 +27,8 @@
 {{--    </style>--}}
 {{--</head>--}}
 {{--<body class="antialiased">--}}
-<x-guest-layout>
+<x-app-layout>
+{{--    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 selection:bg-red-500 selection:text-white">--}}
     <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 selection:bg-red-500 selection:text-white">
         {{--  @todo move to header.blade.php  --}}
 {{--        @if (Route::has('login'))--}}
@@ -46,6 +47,6 @@
 
         @yield('content')
     </div>
-</x-guest-layout>
+</x-app-layout>
 {{--</body>--}}
 {{--</html>--}}

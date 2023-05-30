@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialMediaPlatform;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SocialMediaPlatformController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         return view('SocialMediaPlatform/create');
     }
 
     public function createInstance(Request $request){
         $request->validate([
-            'logo' => 'required|mimes:png,jpg,svg,jpeg,webp|max:2048'
+            'logo' => 'required|image|max:2048'
         ]);
         dump($request);
         dump($request->file('logo'));

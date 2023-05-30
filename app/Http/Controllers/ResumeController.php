@@ -18,6 +18,9 @@ class ResumeController extends Controller
 {
     public function show()
     {
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         // @todo make custom profile model for introduction, mobile, address and cover photo. Include edit form in jetstream profile form/page
 
         $user = Auth::user();

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class SocialMediaLinkController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         $platforms = SocialMediaPlatform::all(['name', 'id']);
         $platform_options = [];
         foreach ($platforms as $platform) {

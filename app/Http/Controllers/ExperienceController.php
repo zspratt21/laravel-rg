@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class ExperienceController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         $entities = Entity::all(['name', 'id']);
         $entity_options = [];
         foreach ($entities as $entity) {

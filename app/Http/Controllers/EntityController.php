@@ -4,17 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use StepStone\PDFreactor\PDFreactor;
 
 class EntityController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         return view('Entity/create');
     }
 
     public function createInstance(Request $request){
         $request->validate([
-            'logo' => 'required|mimes:png,jpg,svg,jpeg|max:2048'
+            'logo' => 'required|image|max:2048'
         ]);
         dump($request);
         dump($request->file('logo'));

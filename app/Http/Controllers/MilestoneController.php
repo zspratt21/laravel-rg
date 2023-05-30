@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class MilestoneController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         $experiences = Experience::query()->where('user', '=', Auth::id())->get(['title', 'id']);
         $experience_options = [];
         foreach ($experiences as $experience) {

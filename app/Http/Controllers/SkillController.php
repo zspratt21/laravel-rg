@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Skill;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SkillController extends Controller
 {
     public function createForm(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
         return view('Skill/create');
     }
 
     public function createInstance(Request $request){
         $request->validate([
-            'icon' => 'required|mimes:png,jpg,svg,jpeg|max:2048'
+            'icon' => 'required|image|max:2048'
         ]);
         dump($request);
         dump($request->file('icon'));
