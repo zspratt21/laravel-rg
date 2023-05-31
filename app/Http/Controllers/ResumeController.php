@@ -28,7 +28,7 @@ class ResumeController extends Controller
         $vars = [
             'mobile' => $profile->mobile,
             'profile_photo' => url('storage/' . $user->profile_photo_path),
-            'cover_photo' => url($profile->cover_photo),
+            'cover_photo' => !empty($profile->cover_photo) ? url($profile->cover_photo): '',
             'introduction' => $profile->introduction,
             'name' => $user->name,
             'email' => $user->email,
