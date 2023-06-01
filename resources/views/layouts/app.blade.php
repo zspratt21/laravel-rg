@@ -29,6 +29,9 @@
 
             }
         </style>
+        @if (isset($head))
+            {{$head}}
+        @endif
     </head>
     <body class="font-sans antialiased">
         <x-banner />
