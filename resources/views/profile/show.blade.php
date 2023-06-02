@@ -1,18 +1,46 @@
 <x-app-layout>
     <x-slot name="head">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <script>
             // AJAX form submission
             $(document).ready(function() {
-                console.log($('#resumeProfileUpdate'));
+                $.ajax({
+{{--                    _token: "{{ csrf_token() }}",--}}
+                    url: '{{ route('resumeProfileGet') }}',
+                    type: 'GET',
+                    // data: formData,
+                    // contentType: false,
+                    // processData: false,
+                    success: function(response) {
+                        // Handle the response from the server
+                        console.log(response);
+                        console.log(response.address);
+                        $('#address').val(response.address);
+                        $('#mobile').val(response.mobile);
+                        $('#introduction').val(response.introduction);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(xhr.responseText);
+                    }
+                });
+
                 $('#resumeProfileUpdate').submit(function(e) {
                     e.preventDefault();
-
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    let formData = new FormData(this);
                     $.ajax({
                         _token: "{{ csrf_token() }}",
                         url: '{{ route('resumeProfileUpdate') }}',
                         type: 'POST',
-                        data: $(this).serialize(),
+                        data: formData,
+                        contentType: false,
+                        processData: false,
                         success: function(response) {
                             // Handle the response from the server
                             console.log(response);
@@ -40,8 +68,7 @@
 
                 <x-section-border />
                 <x-form-section submit="resumeProfileUpdate">
-{{--                    @csrf--}}
-                    <x-slot name="form_id">resumeProfileUpdate</x-slot>
+                    <x-slot name="form_attributes">id="resumeProfileUpdate" enctype="multipart/form-data"</x-slot>
                     <x-slot name="title">
                         {{ __('Resume Profile Information') }}
                     </x-slot>

@@ -8,8 +8,8 @@
 
     <div class="mt-5 md:mt-0 md:col-span-2">
         <form wire:submit.prevent="{{ $submit }}"
-        @if(isset($form_id))
-            id="{{$form_id}}"
+        @if(isset($form_attributes))
+            {{$form_attributes}}
         @endif
         >
             <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow {{ isset($actions) ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-md' }}">
