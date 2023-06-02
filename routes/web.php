@@ -87,5 +87,5 @@ Route::post('/create/milestone', [MilestoneController::class, 'createInstance'])
 
 //resumeProfileUpdate
 Route::get('/edit/resume-profile', [ResumeProfileController::class, 'editForm']);
-Route::post('/edit/resume-profile', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');
+Route::post('/edit/resume-profile/submit', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');
 

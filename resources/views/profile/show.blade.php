@@ -1,13 +1,16 @@
 <x-app-layout>
     <x-slot name="head">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
         <script>
             // AJAX form submission
             $(document).ready(function() {
+                console.log($('#resumeProfileUpdate'));
                 $('#resumeProfileUpdate').submit(function(e) {
                     e.preventDefault();
 
                     $.ajax({
-                        url: {{ route('resumeProfileUpdate') }},
+                        _token: "{{ csrf_token() }}",
+                        url: '{{ route('resumeProfileUpdate') }}',
                         type: 'POST',
                         data: $(this).serialize(),
                         success: function(response) {
@@ -36,49 +39,49 @@
                 @livewire('profile.update-profile-information-form')
 
                 <x-section-border />
-                <div class="md:grid md:grid-cols-3 md:gap-6">
-                    <x-section-title>
-                        <x-slot name="title">{{ __('Resume Profile Information') }}</x-slot>
-                        <x-slot name="description">{{ __('Update your account\'s resume profile information and email address.') }}</x-slot>
-                    </x-section-title>
-
-                    <div class="mt-5 md:mt-0 md:col-span-2">
-                        <div class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md">
-                            <div class="">
-                                <form action="{{route('resumeProfileUpdate')}}" method="post" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="mt-4">
-                                        <x-label class="custom-file-label" for="address">Address</x-label>
+                <x-form-section submit="resumeProfileUpdate">
+{{--                    @csrf--}}
+                    <x-slot name="form_id">resumeProfileUpdate</x-slot>
+                    <x-slot name="title">
+                        {{ __('Resume Profile Information') }}
+                    </x-slot>
+                    <x-slot name="description">
+                        {{ __('Update your account\'s resume profile information and email address.') }}
+                    </x-slot>
+                    <x-slot name="form">
+                        <div class="col-span-6 sm:col-span-4">
+                            <x-label class="custom-file-label" for="address">Address</x-label>
 {{--                                        <x-input type="text" name="address" class="block mt-1 w-full" id="address" value="{{$address}}"/>--}}
-                                        <x-input type="text" name="address" class="block mt-1 w-full" id="address" value=""/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <x-label class="custom-file-label" for="mobile">Mobile</x-label>
-{{--                                        <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value="{{$mobile}}"/>--}}
-                                        <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value=""/>
-                                    </div>
-                                    <div class="mt-4">
-                                        <x-label class="custom-file-label" for="introduction">Introduction</x-label>
-                                        <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction">
-                                            @section('initial_value')
-{{--                                                {{$introduction}}--}}
-                                            @endsection
-                                        </x-textarea>
-                                    </div>
-                                    <div class="mt-4">
-                                        <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
-                                        <x-input type="file" name="cover_photo" class="block mt-1 w-full" id="cover_photo"/>
-                                    </div>
-                                    <div class="flex items-center justify-end px-4 py-3 bg-gray-50 dark:bg-gray-800 text-right sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                                        <x-button>
-                                            {{ __('Create') }}
-                                        </x-button>
-                                    </div>
-                                </form>
-                            </div>
+                            <x-input type="text" name="address" class="block mt-1 w-full" id="address" value=""/>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-span-6 sm:col-span-4">
+                            <x-label class="custom-file-label" for="mobile">Mobile</x-label>
+{{--                                        <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value="{{$mobile}}"/>--}}
+                            <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value=""/>
+                        </div>
+                        <div class="col-span-6 sm:col-span-4">
+                            <x-label class="custom-file-label" for="introduction">Introduction</x-label>
+                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction">
+                                @section('initial_value')
+{{--                                                {{$introduction}}--}}
+                                @endsection
+                            </x-textarea>
+                        </div>
+                        <div class="col-span-6 sm:col-span-4">
+                            <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
+                            <x-input type="file" name="cover_photo" class="block mt-1 w-full" id="cover_photo"/>
+                        </div>
+                    </x-slot>
+                    <x-slot name="actions">
+{{--                        <x-action-message class="mr-3" on="saved">--}}
+{{--                            {{ __('Saved.') }}--}}
+{{--                        </x-action-message>--}}
+
+                        <x-button>
+                            {{ __('Save') }}
+                        </x-button>
+                    </x-slot>
+                </x-form-section>
 
                 <x-section-border />
             @endif
