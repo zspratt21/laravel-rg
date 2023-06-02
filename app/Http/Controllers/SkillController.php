@@ -24,7 +24,7 @@ class SkillController extends Controller
         dump($request->get('name'));
         dump($request->get('description'));
         $fileName = time().'_'.$request->file('icon')->getClientOriginalName();
-        dump($fileName);
+        dump(urlencode($fileName));
         $filePath = $request->file('icon')->storeAs('uploads/images/skill', $fileName, 'public');
         $skill = new Skill();
         $skill->name = $request->get('name');
@@ -34,7 +34,7 @@ class SkillController extends Controller
         $skill->save();
         return back()
             ->with('success','Skill saved.')
-            ->with('icon', $fileName);
+            ->with('icon', urlencode($fileName));
     }
 
     public function show(int $skill_id){

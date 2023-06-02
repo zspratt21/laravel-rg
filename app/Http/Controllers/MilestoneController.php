@@ -33,7 +33,7 @@ class MilestoneController extends Controller
         dump($request->get('description'));
         dump($request->get('experience'));
         $fileName = time().'_'.$request->file('image')->getClientOriginalName();
-        $filePath = $request->file('image')->storeAs('uploads/images/milestone', $fileName, 'public');
+        $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
         $milestone = new Milestone();
         $milestone->image = '/storage/' . $filePath;
         $milestone->title = $request->get('title');
@@ -42,6 +42,6 @@ class MilestoneController extends Controller
         $milestone->save();
         return back()
             ->with('success','Milestone saved.')
-            ->with('icon', $fileName);
+            ->with('icon', urlencode($fileName));
     }
 }

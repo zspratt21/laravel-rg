@@ -26,7 +26,7 @@ class EntityController extends Controller
         dump($request->get('description'));
         $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
         dump($fileName);
-        $filePath = $request->file('logo')->storeAs('uploads/images/entity', $fileName, 'public');
+        $filePath = $request->file('logo')->storeAs('uploads/images/entity', urlencode($fileName), 'public');
         $entity = new Entity();
         $entity->name = $request->get('name');
         $entity->description = $request->get('description');
@@ -34,7 +34,7 @@ class EntityController extends Controller
         $entity->save();
         return back()
             ->with('success','Entity saved.')
-            ->with('logo', $fileName);
+            ->with('logo', urlencode($fileName));
     }
 
 

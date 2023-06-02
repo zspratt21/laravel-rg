@@ -30,8 +30,8 @@ class ResumeProfileController extends Controller
             ]);
         }
         $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();
-        echo 'file name '.$fileName;
-        $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', $fileName, 'public');
+        echo 'file name '.urlencode($fileName);
+        $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');
         $vars = [
             'address' => $request->get('address'),
             'mobile' => $request->get('mobile'),
