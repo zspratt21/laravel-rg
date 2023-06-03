@@ -86,6 +86,7 @@ Route::get('/create/milestone', [MilestoneController::class, 'createForm']);
 Route::post('/create/milestone', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
 
 //resumeProfileUpdate
-Route::get('/get/resume-profile', [ResumeProfileController::class, 'getInstance'])->name('resumeProfileGet');
-Route::post('/edit/resume-profile/submit', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');
+Route::get('/resume-profile/get', [ResumeProfileController::class, 'getInstance'])->name('resumeProfileGet');
+Route::get('/resume-profile/remove-cover-photo', [ResumeProfileController::class, 'removeCoverPhoto'])->name('resumeProfileRemoveCoverPhoto');
+Route::post('/resume-profile/update', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');
 

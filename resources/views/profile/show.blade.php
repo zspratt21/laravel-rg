@@ -6,26 +6,49 @@
             // AJAX form submission
             $(document).ready(function() {
                 $.ajax({
-{{--                    _token: "{{ csrf_token() }}",--}}
                     url: '{{ route('resumeProfileGet') }}',
                     type: 'GET',
-                    // data: formData,
-                    // contentType: false,
-                    // processData: false,
                     success: function(response) {
                         // Handle the response from the server
                         console.log(response);
-                        console.log(response.address);
+                        console.log(response.cover_photo);
                         $('#address').val(response.address);
                         $('#mobile').val(response.mobile);
                         $('#introduction').val(response.introduction);
+                        if( !response.cover_photo ) {
+                            $('#photo_preview').attr('src', response.cover_photo);
+                        }
                     },
                     error: function(xhr, status, error) {
                         // Handle error
                         console.log(xhr.responseText);
                     }
                 });
+                $('#select_photo').on('click',function(e) {
+                    $('#cover_photo').trigger('click');
+                });
+                $('#cover_photo').on('change',function(e) {
+                    $('#photo_preview').attr('src', window.URL.createObjectURL(this.files[0]));
+                });
+                $('#remove_photo').on('click',function(e) {
+                    // Remove photo from model
+                    $.ajax({
+                        url: '{{ route('resumeProfileRemoveCoverPhoto') }}',
+                        type: 'GET',
+                        success: function(response) {
+                            // Handle the response from the server
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.log(xhr.responseText);
+                        }
+                    });
+                    // Remove photo from input
 
+                    // Remove photo from preview img tag
+                    $('#photo_preview').attr('src', '');
+                });
                 $('#resumeProfileUpdate').submit(function(e) {
                     e.preventDefault();
                     $.ajaxSetup({
@@ -77,26 +100,30 @@
                     </x-slot>
                     <x-slot name="form">
                         <div class="col-span-6 sm:col-span-4">
+                            <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
+                            <x-input type="file" name="cover_photo" class="block mt-1 w- hidden" id="cover_photo"/>
+                            <div class="mt-2">
+                                <img src="" id="photo_preview">
+                            </div>
+                            <x-secondary-button class="mt-2 mr-2" type="button" id="select_photo">
+                                {{ __('Select A New Photo') }}
+                            </x-secondary-button>
+
+                            <x-secondary-button type="button" class="mt-2" id="remove_photo">
+                                {{ __('Remove Photo') }}
+                            </x-secondary-button>
+                        </div>
+                        <div class="col-span-6 sm:col-span-4">
                             <x-label class="custom-file-label" for="address">Address</x-label>
-{{--                                        <x-input type="text" name="address" class="block mt-1 w-full" id="address" value="{{$address}}"/>--}}
                             <x-input type="text" name="address" class="block mt-1 w-full" id="address" value=""/>
                         </div>
                         <div class="col-span-6 sm:col-span-4">
                             <x-label class="custom-file-label" for="mobile">Mobile</x-label>
-{{--                                        <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value="{{$mobile}}"/>--}}
                             <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value=""/>
                         </div>
                         <div class="col-span-6 sm:col-span-4">
                             <x-label class="custom-file-label" for="introduction">Introduction</x-label>
-                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction">
-                                @section('initial_value')
-{{--                                                {{$introduction}}--}}
-                                @endsection
-                            </x-textarea>
-                        </div>
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
-                            <x-input type="file" name="cover_photo" class="block mt-1 w-full" id="cover_photo"/>
+                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction"></x-textarea>
                         </div>
                     </x-slot>
                     <x-slot name="actions">

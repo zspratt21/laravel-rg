@@ -23,21 +23,26 @@ class ResumeProfileController extends Controller
         return response()->json($vars)->header('Content-Type', 'application/json');
     }
 
+    public function removeCoverPhoto(Request $request) {
+        $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
+        return response()->json($profile->update(['cover_photo' => NULL]))->header('Content-Type', 'application/json');
+    }
+
     public function editInstance(Request $request){
-        if (!empty($request->file('cover_photo'))){
-            $request->validate([
-                'cover_photo' => 'required|image|max:2048000'
-            ]);
-        }
-        $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();
-        echo 'file name '.urlencode($fileName);
-        $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');
         $vars = [
             'address' => $request->get('address'),
             'mobile' => $request->get('mobile'),
             'introduction' => $request->get('introduction'),
-            'cover_photo' => '/storage/' . $filePath,
         ];
+        if (!empty($request->file('cover_photo'))){
+            $request->validate([
+                'cover_photo' => 'required|image|max:20480'
+            ]);
+            $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();
+            echo 'file name '.urlencode($fileName);
+            $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');
+            $vars['cover_photo'] = '/storage/' . $filePath;
+        }
         $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
         $profile->update($vars);
     }
