@@ -44,7 +44,7 @@ Route::get('resume', [ResumeController::class, 'show']);
 /**
  * Entity Callback Routes.
  */
-Route::get('/create/entity', [EntityController::class, 'createForm']);
+Route::get('/create/entity', [EntityController::class, 'createForm'])->name('createEntity');
 Route::post('/create/entity', [EntityController::class, 'createInstance'])->name('entityCreateInstance');
 Route::get('/entity/{entity_id}', [EntityController::class, 'show']);
 Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
@@ -52,7 +52,7 @@ Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
 /**
  * Skill Callback Routes.
  */
-Route::get('/create/skill', [SkillController::class, 'createForm']);
+Route::get('/create/skill', [SkillController::class, 'createForm'])->name('createSkill');
 Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
 Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink']);
@@ -60,7 +60,7 @@ Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])
 /**
  * Experience Callback Routes.
  */
-Route::get('/create/experience', [ExperienceController::class, 'createForm']);
+Route::get('/create/experience', [ExperienceController::class, 'createForm'])->name('createExperience');
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
 Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
 Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
@@ -68,7 +68,7 @@ Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'p
 /**
  * Social Media Platform Callback Routes.
  */
-Route::get('/create/social', [SocialMediaPlatformController::class, 'createForm']);
+Route::get('/create/social', [SocialMediaPlatformController::class, 'createForm'])->name('createSocial');
 Route::post('/create/social', [SocialMediaPlatformController::class, 'createInstance'])->name('socialCreateInstance');
 Route::get('/social/{social_id}', [SocialMediaPlatformController::class, 'show']);
 Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, 'print']);
@@ -76,7 +76,7 @@ Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, '
 /**
  * Social Media Link Callback Routes.
  */
-Route::get('/create/social-link', [SocialMediaLinkController::class, 'createForm']);
+Route::get('/create/social-link', [SocialMediaLinkController::class, 'createForm'])->name('createSocialLink');
 Route::post('/create/social-link', [SocialMediaLinkController::class, 'createInstance'])->name('socialLinkCreateInstance');
 
 /**

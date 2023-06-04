@@ -15,7 +15,8 @@
                         $('#address').val(response.address);
                         $('#mobile').val(response.mobile);
                         $('#introduction').val(response.introduction);
-                        if( !response.cover_photo ) {
+                        console.log(response.cover_photo);
+                        if($.type(response.cover_photo) === 'string') {
                             $('#photo_preview').attr('src', response.cover_photo);
                         }
                     },
@@ -123,7 +124,7 @@
                         </div>
                         <div class="col-span-6 sm:col-span-4">
                             <x-label class="custom-file-label" for="introduction">Introduction</x-label>
-                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction"></x-textarea>
+                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction" rows="10"></x-textarea>
                         </div>
                     </x-slot>
                     <x-slot name="actions">

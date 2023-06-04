@@ -1,3 +1,5 @@
+{{-- @todo create list pages for entity, skill, experience, social media platform and links --}}
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -15,7 +17,7 @@
     display: block;
     padding: 20px;
     ">
-    <div style="background: rgba(33,37,41,70%); border-radius: 15px">
+    <div style="background: rgba(33,37,41,60%); border-radius: 15px">
         <header id="info">
             <h1>
                 <img style="border-radius: 100px" height="100px" src="{{ $profile_photo }}">
@@ -40,7 +42,7 @@
             </span>
             <section id="statement">
                 <h2>About Me</h2>
-                <p style="background: rgba(33,37,41,70%); border-radius: 15px; padding: 15px">{{ $introduction }}</p>
+                <p style="background: rgba(33,37,41,25%); border-radius: 15px; padding: 15px">{{ $introduction }}</p>
             </section>
         </header>
     </div>
