@@ -1,4 +1,7 @@
 @extends('form-base')
+@section('header')
+    {{ __('Create a new experience') }}
+@endsection
 @section('content')
     <form action="{{route('experienceCreateInstance')}}" method="post" enctype="multipart/form-data">
         @csrf

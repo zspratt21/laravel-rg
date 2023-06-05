@@ -50,6 +50,59 @@ class ExperienceController extends Controller
             ->with('success','Experience saved.');
     }
 
+    public function edit(int $experience_id) {
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
+        $experience = Experience::query()
+            ->where('id', '=', $experience_id)
+            ->where('user', '=', Auth::id())
+            ->first();
+        if (empty($experience)) {
+            return redirect()->route('dashboard');
+        }
+        $entities = Entity::all(['name', 'id']);
+        $entity_options = [];
+        foreach ($entities as $entity) {
+            $entity_options[$entity->id] = $entity->name;
+        }
+        $vars = [
+            'type_options' => [
+                'experience' => 'Employment',
+                'education' => 'Education',
+            ],
+            'entity_options' => $entity_options,
+            'existing_values' => [
+                'title' => $experience->title,
+                'description' => $experience->description,
+                'date_started' => $experience->date_started,
+                'date_ended' => $experience->date_ended,
+                'entity' => $experience->entity,
+                'type' => $experience->type,
+            ],
+            'experience_id' => $experience->id,
+        ];
+        // @todo add in dynamic milestone forms submitted by ajax.
+        // @todo submit main form and dynamic forms via ajax, trigger form submissions with update button.
+        return view('experience/edit', $vars);
+    }
+
+    public function updateInstance(Request $request, int $experience_id) {
+        $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
+        if (!empty($experience)){
+            $vars = [
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+                'date_started' => $request->get('date_started'),
+                'date_ended' => $request->get('date_ended'),
+                'entity' => $request->get('entity'),
+                'type' => $request->get('type'),
+            ];
+            $experience->update($vars);
+        }
+        return NULL;
+    }
+
     public function show(int $experience_id){
         $experience = Experience::query()->where('id', '=', $experience_id)->first();
         $vars = [];

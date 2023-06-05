@@ -1,4 +1,7 @@
 @extends('form-base')
+@section('header')
+    {{ __('Create a new social media platform') }}
+@endsection
 @section('content')
     <form action="{{route('socialCreateInstance')}}" method="post" enctype="multipart/form-data">
         @csrf

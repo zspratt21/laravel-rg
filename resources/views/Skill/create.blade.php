@@ -1,4 +1,7 @@
 @extends('form-base')
+@section('header')
+    {{ __('Create a new skill') }}
+@endsection
 @section('content')
     <form action="{{route('skillCreateInstance')}}" method="post" enctype="multipart/form-data">
         @csrf

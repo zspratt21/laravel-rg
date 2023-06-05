@@ -39,7 +39,7 @@ Route::middleware([
 /**
  * Resume PDF Callback Route.
  */
-Route::get('resume', [ResumeController::class, 'show']);
+Route::get('resume', [ResumeController::class, 'show'])->name('resumePrint');
 
 /**
  * Entity Callback Routes.
@@ -62,6 +62,8 @@ Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])
  */
 Route::get('/create/experience', [ExperienceController::class, 'createForm'])->name('createExperience');
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
+Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit']);
+Route::post('/edit/experience/{experience_id}/submit', [ExperienceController::class, 'updateInstance'])->name('experienceUpdateInstance');
 Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
 Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
 

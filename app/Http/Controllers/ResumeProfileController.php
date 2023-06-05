@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ResumeProfile;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class ResumeProfileController extends Controller
 {
@@ -24,8 +24,12 @@ class ResumeProfileController extends Controller
     }
 
     public function removeCoverPhoto(Request $request) {
-        $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
-        return response()->json($profile->update(['cover_photo' => NULL]))->header('Content-Type', 'application/json');
+        if (!empty(Auth::id())){
+            $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
+            File::delete(public_path().$profile->cover_photo);
+            return response()->json($profile->update(['cover_photo' => NULL]))->header('Content-Type', 'application/json');
+        }
+        return NULL;
     }
 
     public function editInstance(Request $request){
@@ -38,6 +42,7 @@ class ResumeProfileController extends Controller
             $request->validate([
                 'cover_photo' => 'required|image|max:20480'
             ]);
+            $this->removeCoverPhoto($request);
             $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();
             echo 'file name '.urlencode($fileName);
             $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');

@@ -97,10 +97,14 @@
                         {{ __('Resume Profile Information') }}
                     </x-slot>
                     <x-slot name="description">
-                        {{ __('Update your account\'s resume profile information and email address.') }}
+                        {{ __('Update your account\'s resume profile information.') }}
                     </x-slot>
                     <x-slot name="form">
-                        <div class="col-span-6 sm:col-span-4">
+                        <div class="col-span-6 sm:col-span-6">
+                            <x-label class="custom-file-label" for="introduction">Introduction</x-label>
+                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction" rows="10"></x-textarea>
+                        </div>
+                        <div class="col-span-6 sm:col-span-6">
                             <x-label class="custom-file-label" for="cover_photo">Cover Photo</x-label>
                             <x-input type="file" name="cover_photo" class="block mt-1 w- hidden" id="cover_photo"/>
                             <div class="mt-2">
@@ -121,10 +125,6 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-label class="custom-file-label" for="mobile">Mobile</x-label>
                             <x-input type="text" name="mobile" class="block mt-1 w-full" id="mobile" value=""/>
-                        </div>
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-label class="custom-file-label" for="introduction">Introduction</x-label>
-                            <x-textarea type="textarea" name="introduction" class="block mt-1 w-full" id="introduction" rows="10"></x-textarea>
                         </div>
                     </x-slot>
                     <x-slot name="actions">
