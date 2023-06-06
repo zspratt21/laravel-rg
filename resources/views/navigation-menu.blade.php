@@ -38,6 +38,18 @@
                         <x-dropdown align="left" width="60">
                             <x-slot name="trigger">View</x-slot>
                             <x-slot name="content">
+                                <x-dropdown-link href="{{route('listSkills')}}">
+                                    {{ __('Skills') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="">
+                                    {{ __('Entities') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="">
+                                    {{ __('Social Media Platforms') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="">
+                                    {{ __('Experiences') }}
+                                </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('resumePrint') }}">
                                     {{ __('Resume') }}
                                 </x-dropdown-link>

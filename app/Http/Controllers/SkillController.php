@@ -37,6 +37,18 @@ class SkillController extends Controller
             ->with('icon', urlencode($fileName));
     }
 
+    public function edit(Request $request, int $skill_id) {
+
+    }
+
+    public function list(){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
+        $skills = Skill::all(['id', 'name', 'icon']);
+        return view('Skill/list', ['skills' => $skills]);
+    }
+
     public function show(int $skill_id){
         $skill = Skill::query()->where('id', '=', $skill_id)->first();
         $vars = [

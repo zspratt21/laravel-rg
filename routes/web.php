@@ -52,8 +52,10 @@ Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
 /**
  * Skill Callback Routes.
  */
+Route::get('/skills', [SkillController::class, 'list'])->name('listSkills');
 Route::get('/create/skill', [SkillController::class, 'createForm'])->name('createSkill');
 Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
+Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('skillUpdateInstance');
 Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink']);
 

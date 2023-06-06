@@ -1,6 +1,6 @@
 @extends('form-base')
 @section('header')
-    {{ __('Create a new skill') }}
+    {{ __('Create New Skill') }}
 @endsection
 @section('content')
     <form action="{{route('skillCreateInstance')}}" method="post" enctype="multipart/form-data">

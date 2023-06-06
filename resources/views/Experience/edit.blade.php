@@ -39,7 +39,7 @@
     </script>
 @endsection
 @section('header')
-    {{ __('Edit experience: '.$existing_values['title']) }}
+    {{ __('Edit Experience: '.$existing_values['title']) }}
 @endsection
 @section('content')
     <form action="{{route('experienceUpdateInstance', ['experience_id' => $experience_id])}}" method="post" enctype="multipart/form-data" id="experienceUpdate">
@@ -88,7 +88,33 @@
         </div>
         <input type="submit" class="hidden">
     </form>
+    {{--  @todo add this dynamically with button  --}}
+    <div id="milestones">
+        <div>
+            <b>Milestone</b>
+            <form action="{{route('milestoneCreateInstance')}}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="mt-4">
+                    <x-label class="custom-file-label" for="title">Title</x-label>
+                    <x-input type="text" name="title" class="block mt-1 w-full" id="title"/>
+                </div>
+                <div class="mt-4">
+                    <x-label class="custom-file-label" for="description">Description</x-label>
+                    <x-textarea type="textarea" name="description" class="block mt-1 w-full" id="description"></x-textarea>
+                </div>
+                <div class="mt-4">
+                    <x-label class="custom-file-label" for="image">Image</x-label>
+                    <x-input type="file" name="image" class="block mt-1 w-full" id="image"/>
+                </div>
+                <input name="experience" class="hidden" id="experience" value="{{$experience_id}}"/>
+                <input type="submit" class="hidden">
+            </form>
+        </div>
+    </div>
     <div class="flex items-center justify-end mt-4">
+        <x-button class="ml-4" id="add-milestone">
+            {{ __('Add Milestone') }}
+        </x-button>
         <x-button class="ml-4" id="update">
             {{ __('Update') }}
         </x-button>
