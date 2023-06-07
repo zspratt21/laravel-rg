@@ -33,4 +33,12 @@ class SocialMediaPlatformController extends Controller
             ->with('success','Social saved.')
             ->with('icon', urlencode($fileName));
     }
+
+    public function list(Request $request){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
+        $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
+        return view('SocialMediaPlatform/list', ['social_media_platforms' => $social_media_platforms]);
+    }
 }

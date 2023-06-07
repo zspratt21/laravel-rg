@@ -35,6 +35,10 @@
             $('#update').on('click',function(e) {
                 $('#experienceUpdate').trigger('submit');
             });
+            $('#add-milestone').on('click',function(e) {
+                let form = '<h1>Test</h1>'
+                $('#milestones').append(form);
+            });
         });
     </script>
 @endsection

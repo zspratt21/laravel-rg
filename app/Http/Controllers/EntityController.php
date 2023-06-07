@@ -30,13 +30,20 @@ class EntityController extends Controller
         $entity = new Entity();
         $entity->name = $request->get('name');
         $entity->description = $request->get('description');
-        $entity->logo = '/storage/' . $filePath;
+        $entity->logo = !empty($filePath) ? '/storage/' . $filePath : '';
         $entity->save();
         return back()
             ->with('success','Entity saved.')
             ->with('logo', urlencode($fileName));
     }
 
+    public function list(Request $request){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
+        $entities = Entity::all(['id', 'name', 'logo']);
+        return view('Entity/list', ['entities' => $entities]);
+    }
 
     public function show(int $entity_id){
         $entity = Entity::query()->where('id', '=', $entity_id)->first();

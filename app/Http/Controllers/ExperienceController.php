@@ -87,6 +87,14 @@ class ExperienceController extends Controller
         return view('experience/edit', $vars);
     }
 
+    public function list(Request $request){
+        if(empty(Auth::id())){
+            return redirect()->route('login');
+        }
+        $experiences = Experience::all(['id', 'title', 'entity']);
+        return view('Experience/list', ['experiences' => $experiences]);
+    }
+
     public function updateInstance(Request $request, int $experience_id) {
         $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
         if (!empty($experience)){

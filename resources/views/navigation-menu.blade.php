@@ -41,13 +41,13 @@
                                 <x-dropdown-link href="{{route('listSkills')}}">
                                     {{ __('Skills') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="">
+                                <x-dropdown-link href="{{route('listEntities')}}">
                                     {{ __('Entities') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="">
+                                <x-dropdown-link href="{{route('listSocialMediaPlatforms')}}">
                                     {{ __('Social Media Platforms') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="">
+                                <x-dropdown-link href="{{route('listExperiences')}}">
                                     {{ __('Experiences') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('resumePrint') }}">

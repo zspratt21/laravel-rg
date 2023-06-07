@@ -44,6 +44,7 @@ Route::get('resume', [ResumeController::class, 'show'])->name('resumePrint');
 /**
  * Entity Callback Routes.
  */
+Route::get('/entities', [EntityController::class, 'list'])->name('listEntities');
 Route::get('/create/entity', [EntityController::class, 'createForm'])->name('createEntity');
 Route::post('/create/entity', [EntityController::class, 'createInstance'])->name('entityCreateInstance');
 Route::get('/entity/{entity_id}', [EntityController::class, 'show']);
@@ -57,11 +58,12 @@ Route::get('/create/skill', [SkillController::class, 'createForm'])->name('creat
 Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
 Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('skillUpdateInstance');
 Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
-Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink']);
+Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])->name('skillCreateLink');
 
 /**
  * Experience Callback Routes.
  */
+Route::get('/experiences', [ExperienceController::class, 'list'])->name('listExperiences');
 Route::get('/create/experience', [ExperienceController::class, 'createForm'])->name('createExperience');
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
 Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit']);
@@ -72,6 +74,7 @@ Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'p
 /**
  * Social Media Platform Callback Routes.
  */
+Route::get('/social-media-platforms', [SocialMediaPlatformController::class, 'list'])->name('listSocialMediaPlatforms');
 Route::get('/create/social', [SocialMediaPlatformController::class, 'createForm'])->name('createSocial');
 Route::post('/create/social', [SocialMediaPlatformController::class, 'createInstance'])->name('socialCreateInstance');
 Route::get('/social/{social_id}', [SocialMediaPlatformController::class, 'show']);
