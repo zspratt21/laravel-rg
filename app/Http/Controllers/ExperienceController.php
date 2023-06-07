@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ExperienceController extends Controller
 {
-    public function createForm(){
-        if(empty(Auth::id())){
+    public function createForm()
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $entities = Entity::all(['name', 'id']);
@@ -28,7 +29,8 @@ class ExperienceController extends Controller
         return view('Experience/create', $vars);
     }
 
-    public function createInstance(Request $request){
+    public function createInstance(Request $request)
+    {
         dump($request);
         dump($request->get('title'));
         dump($request->get('description'));
@@ -47,11 +49,12 @@ class ExperienceController extends Controller
         $experience->user = Auth::id();
         $experience->save();
         return back()
-            ->with('success','Experience saved.');
+            ->with('success', 'Experience saved.');
     }
 
-    public function edit(int $experience_id) {
-        if(empty(Auth::id())){
+    public function edit(int $experience_id)
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $experience = Experience::query()
@@ -80,24 +83,26 @@ class ExperienceController extends Controller
                 'entity' => $experience->entity,
                 'type' => $experience->type,
             ],
-            'experience_id' => $experience->id,
+            'experience_id' => $experience_id,
         ];
         // @todo add in dynamic milestone forms submitted by ajax.
         // @todo submit main form and dynamic forms via ajax, trigger form submissions with update button.
         return view('experience/edit', $vars);
     }
 
-    public function list(Request $request){
-        if(empty(Auth::id())){
+    public function list(Request $request)
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
-        $experiences = Experience::all(['id', 'title', 'entity']);
+        $experiences = Experience::query()->where('user', '=', Auth::id())->get(['id', 'title', 'entity']);
         return view('Experience/list', ['experiences' => $experiences]);
     }
 
-    public function updateInstance(Request $request, int $experience_id) {
+    public function updateInstance(Request $request, int $experience_id)
+    {
         $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
-        if (!empty($experience)){
+        if (!empty($experience)) {
             $vars = [
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
@@ -108,10 +113,11 @@ class ExperienceController extends Controller
             ];
             $experience->update($vars);
         }
-        return NULL;
+        return redirect()->route('dashboard');
     }
 
-    public function show(int $experience_id){
+    public function show(int $experience_id)
+    {
         $experience = Experience::query()->where('id', '=', $experience_id)->first();
         $vars = [];
         return view('experience/show', $vars);

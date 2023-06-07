@@ -15,8 +15,8 @@
             <div class="">
                 <h3>{{$skill->name}}</h3>
                 <img height="50" src="{{$skill->icon}}" class="h-20">
-                <a href="{{@route('skillUpdateInstance', $skill->id)}}">Edit</a>
-                <a href="{{@route('skillCreateLink', $skill->id)}}">Link</a>
+                <a href="{{route('skillUpdateInstance', $skill->id)}}">Edit</a>
+                <a href="{{route('skillCreateLink', $skill->id)}}">Link</a>
             </div>
         @endforeach
     </div>

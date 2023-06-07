@@ -56,7 +56,8 @@ Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
 Route::get('/skills', [SkillController::class, 'list'])->name('listSkills');
 Route::get('/create/skill', [SkillController::class, 'createForm'])->name('createSkill');
 Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
-Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('skillUpdateInstance');
+Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('editSkill');
+Route::post('/edit/skill/{skill_id}', [SkillController::class, 'updateInstance'])->name('skillUpdateInstance');
 Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])->name('skillCreateLink');
 
@@ -66,7 +67,7 @@ Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])
 Route::get('/experiences', [ExperienceController::class, 'list'])->name('listExperiences');
 Route::get('/create/experience', [ExperienceController::class, 'createForm'])->name('createExperience');
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
-Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit']);
+Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit'])->name('editExperience');
 Route::post('/edit/experience/{experience_id}/submit', [ExperienceController::class, 'updateInstance'])->name('experienceUpdateInstance');
 Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
 Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);

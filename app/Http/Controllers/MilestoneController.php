@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class MilestoneController extends Controller
 {
-    public function createForm(){
-        if(empty(Auth::id())){
+    public function createForm()
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $experiences = Experience::query()->where('user', '=', Auth::id())->get(['title', 'id']);
@@ -26,7 +27,8 @@ class MilestoneController extends Controller
         return view('Milestone/create', $vars);
     }
 
-    public function createInstance(Request $request){
+    public function createInstance(Request $request)
+    {
         dump($request);
         dump($request->file('image'));
         dump($request->get('title'));
@@ -41,7 +43,7 @@ class MilestoneController extends Controller
         $milestone->experience = $request->get('experience');
         $milestone->save();
         return back()
-            ->with('success','Milestone saved.')
+            ->with('success', 'Milestone saved.')
             ->with('icon', urlencode($fileName));
     }
 }

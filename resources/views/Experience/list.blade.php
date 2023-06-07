@@ -15,6 +15,7 @@
             <div class="">
                 <h3>{{$experience->title}}</h3>
                 <span>{{$experience->entity}}</span>
+                <a href="{{route('editExperience', $experience->id)}}">Edit</a>
             </div>
         @endforeach
     </div>
