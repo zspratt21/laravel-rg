@@ -3,7 +3,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script>
-
+        $(document).ready(function() {
+            $('#select_photo').on('click',function(e) {
+                $('#logo').trigger('click');
+            });
+        });
     </script>
 @endsection
 @section('header')
