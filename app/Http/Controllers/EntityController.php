@@ -45,6 +45,47 @@ class EntityController extends Controller
         return view('Entity/list', ['entities' => $entities]);
     }
 
+    public function edit(Request $request, int $entity_id)
+    {
+        if (empty(Auth::id())) {
+            return redirect()->route('login');
+        }
+        $entity = Entity::query()
+            ->where('id', '=', $entity_id)
+            ->first();
+        if (empty($entity)) {
+            return redirect()->route('dashboard');
+        }
+        $vars = [
+            'existing_values' => [
+                'name' => $entity->name,
+                'description' => $entity->description,
+                'logo' => url($entity->logo),
+            ],
+            'entity_id' => $entity_id,
+        ];
+        return view('Entity/edit', $vars);
+    }
+
+    public function updateInstance(Request $request, int $entity_id)
+    {
+        if (empty(Auth::id())) {
+            return redirect()->route('login');
+        }
+        $entity = Entity::query()
+            ->where('id', '=', $entity_id)
+            ->first();
+        if (!empty($entity)) {
+            $vars = [
+                'name' => $request->get('name'),
+                'description' => $request->get('description'),
+            ];
+            $entity->update($vars);
+            return redirect()->route('listEntities');
+        }
+        return redirect()->route('dashboard');
+    }
+
     public function show(int $entity_id){
         $entity = Entity::query()->where('id', '=', $entity_id)->first();
         $vars = [

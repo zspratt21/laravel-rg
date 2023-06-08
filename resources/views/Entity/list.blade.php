@@ -15,6 +15,7 @@
             <div class="">
                 <h3>{{$entity->name}}</h3>
                 <img height="50" src="{{$entity->logo}}" class="h-20">
+                <a href="{{route('editEntity', $entity->id)}}">Edit</a>
             </div>
         @endforeach
     </div>
