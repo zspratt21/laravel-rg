@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use StepStone\PDFreactor\PDFreactor;
 
 class EntityController extends Controller
 {
-    public function createForm(){
-        if(empty(Auth::id())){
+    public function createForm()
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         return view('Entity/create');
     }
 
-    public function createInstance(Request $request){
+    public function createInstance(Request $request)
+    {
         $request->validate([
             'logo' => 'required|image|max:2048'
         ]);
@@ -33,12 +36,13 @@ class EntityController extends Controller
         $entity->logo = !empty($filePath) ? '/storage/' . $filePath : '';
         $entity->save();
         return back()
-            ->with('success','Entity saved.')
+            ->with('success', 'Entity saved.')
             ->with('logo', urlencode($fileName));
     }
 
-    public function list(Request $request){
-        if(empty(Auth::id())){
+    public function list(Request $request)
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $entities = Entity::all(['id', 'name', 'logo']);
@@ -60,11 +64,21 @@ class EntityController extends Controller
             'existing_values' => [
                 'name' => $entity->name,
                 'description' => $entity->description,
-                'logo' => url($entity->logo),
+                'logo' => !empty($entity->logo) ? url($entity->logo): '',
             ],
             'entity_id' => $entity_id,
         ];
         return view('Entity/edit', $vars);
+    }
+
+    public function removeLogo(int $entity_id)
+    {
+        if (!empty(Auth::id())) {
+            $entity = Entity::query()->where('id', '=', $entity_id)->first();
+            File::delete(public_path().$entity->logo);
+            return response()->json($entity->update(['logo' => null]))->header('Content-Type', 'application/json');
+        }
+        return null;
     }
 
     public function updateInstance(Request $request, int $entity_id)
@@ -80,13 +94,24 @@ class EntityController extends Controller
                 'name' => $request->get('name'),
                 'description' => $request->get('description'),
             ];
+            $logo = $request->file('logo');
+            if (!empty($logo)) {
+                $request->validate([
+                    'logo' => 'required|image|max:2048'
+                ]);
+                $this->removeLogo($entity_id);
+                $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+                $filePath = $request->file('logo')->storeAs('uploads/images/entity', urlencode($fileName), 'public');
+                $vars['logo'] = '/storage/' . $filePath;
+            }
             $entity->update($vars);
             return redirect()->route('listEntities');
         }
         return redirect()->route('dashboard');
     }
 
-    public function show(int $entity_id){
+    public function show(int $entity_id)
+    {
         $entity = Entity::query()->where('id', '=', $entity_id)->first();
         $vars = [
             'name' => $entity->name,
@@ -96,11 +121,12 @@ class EntityController extends Controller
         return view('Entity/show', $vars);
     }
 
-    public function print(int $entity_id){
+    public function print(int $entity_id)
+    {
         $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
         $config = [
             'document'  => $this->show($entity_id)->render(),
-            'debugSettings' => ['all' => TRUE],
+            'debugSettings' => ['all' => true],
         ];
         $result = $pdfreactor->convertAsBinary($config);
         header("Content-Type: application/pdf");

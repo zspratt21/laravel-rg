@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\File;
 
 class ResumeProfileController extends Controller
 {
-    public function getInstance() {
-        if(empty(Auth::id())){
+    public function getInstance()
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
@@ -23,22 +24,24 @@ class ResumeProfileController extends Controller
         return response()->json($vars)->header('Content-Type', 'application/json');
     }
 
-    public function removeCoverPhoto(Request $request) {
-        if (!empty(Auth::id())){
+    public function removeCoverPhoto(Request $request)
+    {
+        if (!empty(Auth::id())) {
             $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
             File::delete(public_path().$profile->cover_photo);
-            return response()->json($profile->update(['cover_photo' => NULL]))->header('Content-Type', 'application/json');
+            return response()->json($profile->update(['cover_photo' => null]))->header('Content-Type', 'application/json');
         }
-        return NULL;
+        return null;
     }
 
-    public function editInstance(Request $request){
+    public function editInstance(Request $request)
+    {
         $vars = [
             'address' => $request->get('address'),
             'mobile' => $request->get('mobile'),
             'introduction' => $request->get('introduction'),
         ];
-        if (!empty($request->file('cover_photo'))){
+        if (!empty($request->file('cover_photo'))) {
             $request->validate([
                 'cover_photo' => 'required|image|max:20480'
             ]);

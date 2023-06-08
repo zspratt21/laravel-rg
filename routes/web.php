@@ -49,6 +49,7 @@ Route::get('/create/entity', [EntityController::class, 'createForm'])->name('cre
 Route::post('/create/entity', [EntityController::class, 'createInstance'])->name('entityCreateInstance');
 Route::get('/edit/entity/{entity_id}', [EntityController::class, 'edit'])->name('editEntity');
 Route::post('/edit/entity/{entity_id}', [EntityController::class, 'updateInstance'])->name('entityUpdateInstance');
+Route::get('/entity/{entity_id}/remove-logo', [EntityController::class, 'removeLogo'])->name('entityRemoveLogo');
 Route::get('/entity/{entity_id}', [EntityController::class, 'show']);
 Route::get('/entity/{entity_id}/print', [EntityController::class, 'print']);
 
