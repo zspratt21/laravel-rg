@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class SkillController extends Controller
 {
@@ -55,6 +56,7 @@ class SkillController extends Controller
                 'name' => $skill->name,
                 'description' => $skill->description,
                 'url' => $skill->url,
+                'icon' => !empty($skill->icon) ? url($skill->icon) : '',
             ],
             'skill_id' => $skill_id,
         ];
@@ -75,6 +77,16 @@ class SkillController extends Controller
                 'description' => $request->get('description'),
                 'url' => $request->get('url'),
             ];
+            $icon = $request->file('icon');
+            if (!empty($icon)) {
+                $request->validate([
+                    'icon' => 'required|image|max:2048'
+                ]);
+                $this->removeIcon($skill_id);
+                $fileName = time().'_'.$request->file('icon')->getClientOriginalName();
+                $filePath = $request->file('icon')->storeAs('uploads/images/skill', urlencode($fileName), 'public');
+                $vars['icon'] = '/storage/' . $filePath;
+            }
             $skill->update($vars);
             return redirect()->route('listSkills');
         }
@@ -88,6 +100,16 @@ class SkillController extends Controller
         }
         $skills = Skill::all(['id', 'name', 'icon']);
         return view('Skill/list', ['skills' => $skills]);
+    }
+
+    public function removeIcon(int $skill_id)
+    {
+        if (!empty(Auth::id())) {
+            $skill = Skill::query()->where('id', '=', $skill_id)->first();
+            File::delete(public_path().$skill->icon);
+            return response()->json($skill->update(['icon' => null]))->header('Content-Type', 'application/json');
+        }
+        return null;
     }
 
     public function show(int $skill_id)

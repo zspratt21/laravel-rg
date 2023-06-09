@@ -61,6 +61,7 @@ Route::get('/create/skill', [SkillController::class, 'createForm'])->name('creat
 Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('skillCreateInstance');
 Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('editSkill');
 Route::post('/edit/skill/{skill_id}', [SkillController::class, 'updateInstance'])->name('skillUpdateInstance');
+Route::get('/skill/{skill_id}/remove-logo', [SkillController::class, 'removeIcon'])->name('skillRemoveIcon');
 Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])->name('skillCreateLink');
 
@@ -81,6 +82,9 @@ Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'p
 Route::get('/social-media-platforms', [SocialMediaPlatformController::class, 'list'])->name('listSocialMediaPlatforms');
 Route::get('/create/social', [SocialMediaPlatformController::class, 'createForm'])->name('createSocial');
 Route::post('/create/social', [SocialMediaPlatformController::class, 'createInstance'])->name('socialCreateInstance');
+Route::get('/edit/social/{social_id}', [SocialMediaPlatformController::class, 'edit'])->name('editSocial');
+Route::post('/edit/social/{social_id}/submit', [SocialMediaPlatformController::class, 'updateInstance'])->name('socialUpdateInstance');
+Route::get('/social/{social_id}/remove-logo', [SocialMediaPlatformController::class, 'removeLogo'])->name('socialRemoveLogo');
 Route::get('/social/{social_id}', [SocialMediaPlatformController::class, 'show']);
 Route::get('/social/{social_id}/print', [SocialMediaPlatformController::class, 'print']);
 

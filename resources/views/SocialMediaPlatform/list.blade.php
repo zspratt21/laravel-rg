@@ -15,6 +15,8 @@
             <div class="">
                 <h3>{{$social_media_platform->name}}</h3>
                 <img height="50" src="{{$social_media_platform->logo}}" class="h-20">
+                <a href="{{route('editSocial', $social_media_platform->id)}}">Edit</a>
+
             </div>
         @endforeach
     </div>

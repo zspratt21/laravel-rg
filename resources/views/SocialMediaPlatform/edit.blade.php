@@ -5,16 +5,16 @@
     <script>
         $(document).ready(function() {
             $('#select_photo').on('click',function(e) {
-                $('#icon').trigger('click');
+                $('#logo').trigger('click');
             });
-            $('#icon').on('change',function(e) {
+            $('#logo').on('change',function(e) {
                 $('#photo_preview').attr('src', window.URL.createObjectURL(this.files[0]));
                 $('#photo_preview').removeClass('hidden');
             });
             $('#remove_photo').on('click',function(e) {
                 // Remove photo from model
                 $.ajax({
-                    url: '{{ route('skillRemoveIcon', $skill_id) }}',
+                    url: '{{ route('socialRemoveLogo', $social_id) }}',
                     type: 'GET',
                     success: function(response) {
                         // Remove photo from input
@@ -33,33 +33,25 @@
     </script>
 @endsection
 @section('header')
-    {{ __('Edit Skill: ' . $existing_values['name']) }}
+    {{ __('Edit Social Media Platform: ' . $existing_values['name']) }}
 @endsection
 @section('content')
-    <form action="{{route('skillUpdateInstance', $skill_id)}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('socialUpdateInstance', $social_id)}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="name">Name</x-label>
             <x-input type="text" name="name" class="block mt-1 w-full" id="name" value="{{$existing_values['name']}}"/>
         </div>
         <div class="mt-4">
-            <x-label class="custom-file-label" for="url">Url</x-label>
-            <x-input type="text" name="url" class="block mt-1 w-full" id="url" value="{{$existing_values['url']}}"/>
-        </div>
-        <div class="mt-4">
-            <x-label class="custom-file-label" for="description">Description</x-label>
-            <x-textarea type="textarea" name="description" class="block mt-1 w-full" id="description">@section('initial_value'){{$existing_values['description']}}@endsection</x-textarea>
-        </div>
-        <div class="mt-4">
             <div class="mt-2">
-                @if(!empty($existing_values['icon']))
-                    <img height="50" src="{{$existing_values['icon']}}" class="h-20" id="photo_preview">
+                @if(!empty($existing_values['logo']))
+                    <img height="50" src="{{$existing_values['logo']}}" class="h-20" id="photo_preview">
                 @else
                     <img height="50" src="" class="h-20 hidden" id="photo_preview">
                 @endif
             </div>
-            <x-label class="custom-file-label" for="icon">Icon</x-label>
-            <x-input type="file" name="icon" class="hidden" id="icon"/>
+            <x-label class="custom-file-label" for="logo">Logo</x-label>
+            <x-input type="file" name="logo" class="hidden" id="logo"/>
             <x-secondary-button class="mt-2 mr-2" type="button" id="select_photo">
                 {{ __('Select A New Photo') }}
             </x-secondary-button>

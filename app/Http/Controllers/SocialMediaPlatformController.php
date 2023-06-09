@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SocialMediaPlatform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class SocialMediaPlatformController extends Controller
 {
@@ -32,6 +33,42 @@ class SocialMediaPlatformController extends Controller
         return back()
             ->with('success','Social saved.')
             ->with('icon', urlencode($fileName));
+    }
+
+    public function edit(Request $request, int $social_id)
+    {
+        if (empty(Auth::id())) {
+            return redirect()->route('login');
+        }
+        $social_media_platform = SocialMediaPlatform::query()
+            ->where('id', '=', $social_id)
+            ->first();
+        if (empty($social_media_platform)) {
+            return redirect()->route('dashboard');
+        }
+        $vars = [
+            'existing_values' => [
+                'name' => $social_media_platform->name,
+                'logo' => !empty($social_media_platform->logo) ? url($social_media_platform->logo): '',
+            ],
+            'social_id' => $social_id,
+        ];
+        return view('SocialMediaPlatform/edit', $vars);
+    }
+
+    public function removeLogo(int $social_id)
+    {
+        if (!empty(Auth::id())) {
+            $social_media_platform = SocialMediaPlatform::query()->where('id', '=', $social_id)->first();
+            File::delete(public_path().$social_media_platform->logo);
+            return response()->json($social_media_platform->update(['logo' => null]))->header('Content-Type', 'application/json');
+        }
+        return null;
+    }
+
+    public function updateInstance(Request $request, int $social_id)
+    {
+
     }
 
     public function list(Request $request){
