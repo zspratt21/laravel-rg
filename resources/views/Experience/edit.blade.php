@@ -31,13 +31,54 @@
                     }
                 });
             });
-            //$('#myForm').trigger('submit');
-            $('#update').on('click',function(e) {
-                $('#experienceUpdate').trigger('submit');
+            $(document).on('submit', '.milestone-create', function (e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                let formData = new FormData(this);
+                $.ajax({
+                    _token: "{{ csrf_token() }}",
+                    url: '{{ route('milestoneCreateInstance', ['experience_id' => $experience_id]) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Handle the response from the server
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(xhr.responseText);
+                    }
+                });
             });
             $('#add-milestone').on('click',function(e) {
-                let form = '<h1>Test</h1>'
-                $('#milestones').append(form);
+                let form = '';
+                $.ajax({
+                    url: '{{ route('createMilestone', ['experience_id' => $experience_id]) }}',
+                    type: 'GET',
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Handle the response from the server
+                        console.log(response.html);
+                        $('#milestones').append(response.html);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+            $('#update').on('click',function(e) {
+                $('#experienceUpdate').trigger('submit');
+                $('.milestone-create').each(function(){
+                    $(this).trigger('submit');
+                });
             });
         });
     </script>
@@ -94,26 +135,7 @@
     </form>
     {{--  @todo add this dynamically with button  --}}
     <div id="milestones">
-        <div>
-            <b>Milestone</b>
-            <form action="{{route('milestoneCreateInstance')}}" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="mt-4">
-                    <x-label class="custom-file-label" for="title">Title</x-label>
-                    <x-input type="text" name="title" class="block mt-1 w-full" id="title"/>
-                </div>
-                <div class="mt-4">
-                    <x-label class="custom-file-label" for="description">Description</x-label>
-                    <x-textarea type="textarea" name="description" class="block mt-1 w-full" id="description"></x-textarea>
-                </div>
-                <div class="mt-4">
-                    <x-label class="custom-file-label" for="image">Image</x-label>
-                    <x-input type="file" name="image" class="block mt-1 w-full" id="image"/>
-                </div>
-                <input name="experience" class="hidden" id="experience" value="{{$experience_id}}"/>
-                <input type="submit" class="hidden">
-            </form>
-        </div>
+
     </div>
     <div class="flex items-center justify-end mt-4">
         <x-button class="ml-4" id="add-milestone">

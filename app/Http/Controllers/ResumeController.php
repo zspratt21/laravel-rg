@@ -104,6 +104,7 @@ class ResumeController extends Controller
         header("Content-Type: application/pdf");
         header('Content-Disposition: inline; filename="' . $user->name . ' - Resume - ' . date('U') . '.pdf"');
         echo $result;
+        return true;
     }
 
 }

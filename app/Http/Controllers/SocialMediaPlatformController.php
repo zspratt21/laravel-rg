@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\File;
 
 class SocialMediaPlatformController extends Controller
 {
-    public function createForm(){
-        if(empty(Auth::id())){
+    public function createForm()
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         return view('SocialMediaPlatform/create');
     }
 
-    public function createInstance(Request $request){
+    public function createInstance(Request $request)
+    {
         $request->validate([
             'logo' => 'required|image|max:2048'
         ]);
@@ -31,7 +33,7 @@ class SocialMediaPlatformController extends Controller
         $social_media_platform->logo = '/storage/' . $filePath;
         $social_media_platform->save();
         return back()
-            ->with('success','Social saved.')
+            ->with('success', 'Social saved.')
             ->with('icon', urlencode($fileName));
     }
 
@@ -68,11 +70,35 @@ class SocialMediaPlatformController extends Controller
 
     public function updateInstance(Request $request, int $social_id)
     {
-
+        if (empty(Auth::id())) {
+            return redirect()->route('login');
+        }
+        $social = SocialMediaPlatform::query()
+            ->where('id', '=', $social_id)
+            ->first();
+        if (!empty($social)) {
+            $vars = [
+                'name' => $request->get('name'),
+            ];
+            $logo = $request->file('logo');
+            if (!empty($logo)) {
+                $request->validate([
+                    'logo' => 'required|image|max:2048'
+                ]);
+                $this->removeLogo($social_id);
+                $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+                $filePath = $request->file('logo')->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
+                $vars['logo'] = '/storage/' . $filePath;
+            }
+            $social->update($vars);
+            return redirect()->route('listSocialMediaPlatforms');
+        }
+        return redirect()->route('dashboard');
     }
 
-    public function list(Request $request){
-        if(empty(Auth::id())){
+    public function list(Request $request)
+    {
+        if (empty(Auth::id())) {
             return redirect()->route('login');
         }
         $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
