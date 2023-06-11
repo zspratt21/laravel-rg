@@ -1,5 +1,5 @@
 <div>
-    <b>Milestone</b>
+    <b>Add New Milestone</b>
     <form action="{{route('milestoneCreateInstance', $experience_id)}}" method="post" enctype="multipart/form-data" class="milestone-create">
         @csrf
         <div class="mt-4">

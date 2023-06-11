@@ -99,6 +99,9 @@ Route::post('/create/social-link', [SocialMediaLinkController::class, 'createIns
  */
 Route::get('/create/milestone/{experience_id}', [MilestoneController::class, 'createForm'])->name('createMilestone');
 Route::post('/create/milestone/{experience_id}/submit', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
+Route::get('/get/milestones/{experience_id}', [MilestoneController::class, 'getMilestonesFromExperience'])->name('getMilestonesFromExperience');
+Route::get('/edit/milestone/{milestone_id}', [MilestoneController::class, 'edit'])->name('editMilestone');
+Route::post('/edit/milestone/{milestone_id}/submit', [MilestoneController::class, 'updateInstance'])->name('milestoneUpdateInstance');
 
 //resumeProfileUpdate
 Route::get('/resume-profile/get', [ResumeProfileController::class, 'getInstance'])->name('resumeProfileGet');

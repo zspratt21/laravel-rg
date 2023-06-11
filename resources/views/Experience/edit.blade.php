@@ -23,7 +23,7 @@
                     processData: false,
                     success: function(response) {
                         // Handle the response from the server
-                        console.log(response);
+                        console.log('noice');
                     },
                     error: function(xhr, status, error) {
                         // Handle error
@@ -48,6 +48,7 @@
                     processData: false,
                     success: function(response) {
                         // Handle the response from the server
+                        console.log('edit blade line 52');
                         console.log(response);
                     },
                     error: function(xhr, status, error) {
@@ -64,8 +65,6 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Handle the response from the server
-                        console.log(response.html);
                         $('#milestones').append(response.html);
                     },
                     error: function(xhr, status, error) {
