@@ -49,7 +49,21 @@
                     success: function(response) {
                         // Handle the response from the server
                         console.log('edit blade line 52');
-                        console.log(response);
+                        console.log(response.milestone.id);
+                        $.ajax({
+                            url: '/edit/milestone/'+response.milestone.id,
+                            type: 'GET',
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                $('#milestones').append(response.html);
+                                console.log($(this));
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle error
+                                console.log(xhr.responseText);
+                            }
+                        });
                     },
                     error: function(xhr, status, error) {
                         // Handle error
@@ -58,7 +72,6 @@
                 });
             });
             $('#add-milestone').on('click',function(e) {
-                let form = '';
                 $.ajax({
                     url: '{{ route('createMilestone', ['experience_id' => $experience_id]) }}',
                     type: 'GET',
@@ -132,9 +145,10 @@
         </div>
         <input type="submit" class="hidden">
     </form>
-    {{--  @todo add this dynamically with button  --}}
     <div id="milestones">
-
+        @foreach($milestone_edit_forms as $milestone_edit_form)
+            {!!$milestone_edit_form!!}
+        @endforeach
     </div>
     <div class="flex items-center justify-end mt-4">
         <x-button class="ml-4" id="add-milestone">

@@ -1,5 +1,5 @@
 <div>
-    <b>Edit Milestone<span>Delete</span></b>
+    <b>Edit Milestone: {{$existing_values['title']}}<span>Delete</span></b>
     <form action="{{route('milestoneUpdateInstance', $milestone_id)}}" method="post" enctype="multipart/form-data" class="milestone-create">
         @csrf
         <div class="mt-4">

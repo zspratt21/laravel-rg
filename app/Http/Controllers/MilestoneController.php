@@ -21,20 +21,11 @@ class MilestoneController extends Controller
         }
         $vars = [
             'experience_id' => $experience_id,
-            // @todo put existing milestones here
         ];
         $response_vars = [
             'html' => view('Milestone/create', $vars)->render(),
         ];
         return Response::json($response_vars);
-    }
-
-    public function getMilestonesFromExperience(int $experience_id)
-    {
-        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get(['id']);
-        foreach ($milestones as $milestone){
-            dump($milestone->id);
-        }
     }
 
     public function edit(int $milestone_id)
@@ -56,30 +47,20 @@ class MilestoneController extends Controller
 
     public function createInstance(Request $request, int $experience_id)
     {
-        $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
-//        dump($request);
-        $response_vars = [
-            'title' => $request->get('title'),
-            'description' => $request->get('description'),
-            'image' => $fileName,
-            'experience' => $experience_id,
-            'experience_form' => (int) $request->get('experience'),
-        ];
-//        dump($request->file('image'));
-//        dump($request->get('title'));
-//        dump($request->get('description'));
-//        dump($request->get('experience'));
-//        $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
-//        $milestone = new Milestone();
-//        $milestone->image = '/storage/' . $filePath;
-//        $milestone->title = $request->get('title');
-//        $milestone->description = $request->get('title');
-//        $milestone->experience = $request->get('experience');
-//        $milestone->save();
+        $milestone = new Milestone();
+        $milestone->title = $request->get('title');
+        $milestone->description = $request->get('title');
+        $milestone->experience = $experience_id;
+        if (!empty($request->file('image'))) {
+            $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
+            $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
+            $milestone->image = '/storage/' . $filePath;
+        }
+        $milestone->save();
 //        return back()
 //            ->with('success', 'Milestone saved.')
 //            ->with('icon', urlencode($fileName));
-        return Response::json($response_vars);
+        return Response::json(['milestone' => $milestone]);
     }
 
     public function updateInstance(Request $request, int $milestone_id)

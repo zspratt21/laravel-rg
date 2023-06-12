@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Experience;
+use App\Models\Milestone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class ExperienceController extends Controller
 {
@@ -69,6 +71,25 @@ class ExperienceController extends Controller
         foreach ($entities as $entity) {
             $entity_options[$entity->id] = $entity->name;
         }
+        $milestone_fields = [
+            'id',
+            'title',
+            'description',
+            'image',
+        ];
+        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get($milestone_fields);
+        $milestone_edit_forms = [];
+        foreach ($milestones as $milestone) {
+            $vars = [
+                'milestone_id' => $milestone->id,
+                'existing_values' => [
+                    'title' => $milestone->title,
+                    'description' => $milestone->description,
+                    'image' => !empty($milestone->image) ? url($milestone->image) : '',
+                ]
+            ];
+            $milestone_edit_forms[] = view('Milestone/edit', $vars)->render();
+        }
         $vars = [
             'type_options' => [
                 'experience' => 'Employment',
@@ -84,10 +105,22 @@ class ExperienceController extends Controller
                 'type' => $experience->type,
             ],
             'experience_id' => $experience_id,
+            'milestone_edit_forms' => $milestone_edit_forms,
         ];
         // @todo add in dynamic milestone forms submitted by ajax.
         // @todo submit main form and dynamic forms via ajax, trigger form submissions with update button.
+//        dump($vars);
         return view('experience/edit', $vars);
+    }
+
+    public function getMilestones(int $experience_id)
+    {
+        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get(['id']);
+        foreach ($milestones as $milestone) {
+            dump($milestone->id);
+//            dump($this->edit($milestone->id));
+        }
+        return Response::json(['milestones' => $milestones]);
     }
 
     public function list(Request $request)

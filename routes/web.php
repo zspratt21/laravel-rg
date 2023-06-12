@@ -73,6 +73,7 @@ Route::get('/create/experience', [ExperienceController::class, 'createForm'])->n
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
 Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit'])->name('editExperience');
 Route::post('/edit/experience/{experience_id}/submit', [ExperienceController::class, 'updateInstance'])->name('experienceUpdateInstance');
+Route::get('/edit/experience/{experience_id}/milestones', [ExperienceController::class, 'getMilestones'])->name('experienceGetMilestones');
 Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
 Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
 
@@ -99,7 +100,6 @@ Route::post('/create/social-link', [SocialMediaLinkController::class, 'createIns
  */
 Route::get('/create/milestone/{experience_id}', [MilestoneController::class, 'createForm'])->name('createMilestone');
 Route::post('/create/milestone/{experience_id}/submit', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
-Route::get('/get/milestones/{experience_id}', [MilestoneController::class, 'getMilestonesFromExperience'])->name('getMilestonesFromExperience');
 Route::get('/edit/milestone/{milestone_id}', [MilestoneController::class, 'edit'])->name('editMilestone');
 Route::post('/edit/milestone/{milestone_id}/submit', [MilestoneController::class, 'updateInstance'])->name('milestoneUpdateInstance');
 
