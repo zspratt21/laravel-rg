@@ -75,7 +75,7 @@ class ResumeController extends Controller
                     $milestone_data[] = [
                         'title' => $milestone->title,
                         'description' => $milestone->description,
-                        'image' => url($milestone->image),
+                        'image' => !empty($milestone->image) ? url($milestone->image) : '',
                     ];
                 }
             }

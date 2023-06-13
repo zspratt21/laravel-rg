@@ -31,6 +31,63 @@
                     }
                 });
             });
+            $(document).on('change', '.milestone-image', function (e) {
+                $(this).closest('.milestone-form').find('.photo-preview').attr('src', window.URL.createObjectURL(this.files[0]));
+                $(this).closest('.milestone-form').find('.photo-preview').removeClass('hidden');
+            });
+            $(document).on('click', '.select-photo', function (e) {
+                $(this).closest('.milestone-form').find('.milestone-image').trigger('click');
+            });
+            $(document).on('click', '.remove-photo', function (e) {
+                $(this).closest('.milestone-form').find('.photo-preview').attr('src', '');
+                $(this).closest('.milestone-form').find('.photo-preview').addClass('hidden');
+                console.log($(this).closest('.milestone-form').find('.milestone-image').val());
+                $(this).closest('.milestone-form').find('.milestone-image').val(null);
+                console.log($(this).closest('.milestone-form').find('.milestone-image').val());
+                if ($(this).closest('.milestone-form').hasClass('milestone-edit') === true) {
+                    console.log('id for image remove')
+                    console.log($(this).closest('.milestone-form').find('.milestone-id').val());
+                    $.ajax({
+                        url: '/edit/milestone/' + $(this).closest('.milestone-form').find('.milestone-id').val() + '/remove-image',
+                        type: 'GET',
+                        success: function(response) {
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            });
+            $(document).on('submit', '.milestone-edit', function (e) {
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                let formData = new FormData(this);
+                console.log(formData.get('id'));
+                $.ajax({
+                    _token: "{{ csrf_token() }}",
+                    url: '/edit/milestone/'+formData.get('id')+'/submit',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Handle the response from the server
+                        console.log('edit blade line 63');
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+
             $(document).on('submit', '.milestone-create', function (e) {
                 e.preventDefault();
                 $.ajaxSetup({
@@ -89,6 +146,9 @@
             $('#update').on('click',function(e) {
                 $('#experienceUpdate').trigger('submit');
                 $('.milestone-create').each(function(){
+                    $(this).trigger('submit');
+                });
+                $('.milestone-edit').each(function(){
                     $(this).trigger('submit');
                 });
             });

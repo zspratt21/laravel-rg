@@ -102,6 +102,7 @@ Route::get('/create/milestone/{experience_id}', [MilestoneController::class, 'cr
 Route::post('/create/milestone/{experience_id}/submit', [MilestoneController::class, 'createInstance'])->name('milestoneCreateInstance');
 Route::get('/edit/milestone/{milestone_id}', [MilestoneController::class, 'edit'])->name('editMilestone');
 Route::post('/edit/milestone/{milestone_id}/submit', [MilestoneController::class, 'updateInstance'])->name('milestoneUpdateInstance');
+Route::get('/edit/milestone/{milestone_id}/remove-image', [MilestoneController::class, 'removeImage'])->name('milestoneRemoveImage');
 
 //resumeProfileUpdate
 Route::get('/resume-profile/get', [ResumeProfileController::class, 'getInstance'])->name('resumeProfileGet');

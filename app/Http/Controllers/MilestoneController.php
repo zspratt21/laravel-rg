@@ -6,6 +6,7 @@ use App\Models\Experience;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
 class MilestoneController extends Controller
@@ -56,14 +57,44 @@ class MilestoneController extends Controller
             $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
             $milestone->image = '/storage/' . $filePath;
         }
-        $milestone->save();
-//        return back()
-//            ->with('success', 'Milestone saved.')
-//            ->with('icon', urlencode($fileName));
-        return Response::json(['milestone' => $milestone]);
+        $vars = [
+            // @debug remove and only return created bool
+            'milestone' => $milestone,
+            'created' => $milestone->save(),
+        ];
+        return Response::json($vars);
+    }
+
+    public function removeImage(int $milestone_id)
+    {
+        if (!empty(Auth::id())) {
+            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            File::delete(public_path().$milestone->image);
+            return response()->json($milestone->update(['image' => null]))->header('Content-Type', 'application/json');
+        }
+        return null;
     }
 
     public function updateInstance(Request $request, int $milestone_id)
     {
+        $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+        if (!empty($milestone)) {
+            $vars = [
+                'title' => $request->get('title'),
+                'description' => $request->get('description'),
+            ];
+            if (!empty($request->file('image'))) {
+                if (!empty($milestone->image)) {
+                    $this->removeImage($milestone_id);
+                }
+                $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
+                $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
+                $vars['image'] = '/storage/' . $filePath;
+            }
+            $milestone->update($vars);
+            return Response::json($vars);
+        }
+        return null;
     }
+
 }
