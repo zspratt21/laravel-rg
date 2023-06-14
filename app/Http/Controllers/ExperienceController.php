@@ -107,9 +107,6 @@ class ExperienceController extends Controller
             'experience_id' => $experience_id,
             'milestone_edit_forms' => $milestone_edit_forms,
         ];
-        // @todo add in dynamic milestone forms submitted by ajax.
-        // @todo submit main form and dynamic forms via ajax, trigger form submissions with update button.
-//        dump($vars);
         return view('experience/edit', $vars);
     }
 
@@ -123,6 +120,7 @@ class ExperienceController extends Controller
         return Response::json(['milestones' => $milestones]);
     }
 
+    // @todo add in other details from entity to make it look nice
     public function list(Request $request)
     {
         if (empty(Auth::id())) {

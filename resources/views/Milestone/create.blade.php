@@ -1,4 +1,4 @@
-<div>
+<div class="milestone-form-container">
     <b>Add New Milestone</b>
     <form action="{{route('milestoneCreateInstance', $experience_id)}}" method="post" enctype="multipart/form-data" class="milestone-create milestone-form">
         @csrf

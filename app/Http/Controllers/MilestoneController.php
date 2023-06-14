@@ -50,7 +50,7 @@ class MilestoneController extends Controller
     {
         $milestone = new Milestone();
         $milestone->title = $request->get('title');
-        $milestone->description = $request->get('title');
+        $milestone->description = $request->get('description');
         $milestone->experience = $experience_id;
         if (!empty($request->file('image'))) {
             $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
@@ -73,6 +73,14 @@ class MilestoneController extends Controller
             return response()->json($milestone->update(['image' => null]))->header('Content-Type', 'application/json');
         }
         return null;
+    }
+
+    public function deleteInstance(int $milestone_id)
+    {
+        $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+        if (!empty($milestone)) {
+
+        }
     }
 
     public function updateInstance(Request $request, int $milestone_id)

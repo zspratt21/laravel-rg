@@ -96,6 +96,8 @@
                     }
                 });
                 let formData = new FormData(this);
+                console.log($(this));
+                let form = $(this);
                 $.ajax({
                     _token: "{{ csrf_token() }}",
                     url: '{{ route('milestoneCreateInstance', ['experience_id' => $experience_id]) }}',
@@ -114,7 +116,7 @@
                             processData: false,
                             success: function(response) {
                                 $('#milestones').append(response.html);
-                                console.log($(this));
+                                form.closest('.milestone-form-container').remove();
                             },
                             error: function(xhr, status, error) {
                                 // Handle error
