@@ -1,5 +1,12 @@
 <div class="milestone-form-container">
-    <b>Add New Milestone</b>
+    <div class="flex">
+        <b>Add New Milestone</b>
+        <div class="flex items-end justify-end grow">
+            <x-button class="flex items-end justify-end mt-2 milestone-delete" id="delete-milestone">
+                {{ __('Delete') }}
+            </x-button>
+        </div>
+    </div>
     <form action="{{route('milestoneCreateInstance', $experience_id)}}" method="post" enctype="multipart/form-data" class="milestone-create milestone-form">
         @csrf
         <div class="mt-4">

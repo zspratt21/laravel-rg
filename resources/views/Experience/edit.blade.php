@@ -43,7 +43,7 @@
                 $(this).closest('.milestone-form').find('.milestone-image').val(null);
                 console.log($(this).closest('.milestone-form').find('.milestone-image').val());
                 if ($(this).closest('.milestone-form').hasClass('milestone-edit') === true) {
-                    let milestone_remove_image_route="{{ route('milestoneRemoveImage',  'milestone_id' )}}"
+                    let milestone_remove_image_route = "{{ route('milestoneRemoveImage',  ['milestone_id' => 'milestone_id'] )}}"
                     $.ajax({
                         url: milestone_remove_image_route.replace('milestone_id', $(this).closest('.milestone-form').find('.milestone-id').val()),
                         type: 'GET',
@@ -58,6 +58,27 @@
                     });
                 }
             });
+            $(document).on('click', '.milestone-delete', function (e) {
+                let formContainer = $(this).closest('.milestone-form-container');
+                if ($(this).closest('.milestone-form-container').find('.milestone-form').hasClass('milestone-edit') === true) {
+                    let milestone_delete_instance_route = "{{ route('milestoneDeleteInstance',  ['milestone_id' => 'milestone_id'] )}}"
+                    $.ajax({
+                        url: milestone_delete_instance_route.replace('milestone_id', $(this).closest('.milestone-form-container').find('.milestone-id').val()),
+                        type: 'GET',
+                        success: function(response) {
+                            console.log(response);
+                            formContainer.remove();
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+                else if ($(this).closest('.milestone-form-container').find('.milestone-form').hasClass('milestone-create') === true) {
+                    $(this).closest('.milestone-form-container').remove();
+                }
+            });
             $(document).on('submit', '.milestone-edit', function (e) {
                 e.preventDefault();
                 $.ajaxSetup({
@@ -66,10 +87,10 @@
                     }
                 });
                 let formData = new FormData(this);
-                console.log(formData.get('id'));
+                let milestone_edit_submit_route = "{{ route('milestoneUpdateInstance',  ['milestone_id' => 'milestone_id'] )}}";
                 $.ajax({
                     _token: "{{ csrf_token() }}",
-                    url: '/edit/milestone/'+formData.get('id')+'/submit',
+                    url: milestone_edit_submit_route.replace('milestone_id', formData.get('id')),
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -107,6 +128,7 @@
                         // Handle the response from the server
                         console.log('edit blade line 52');
                         console.log(response.milestone.id);
+                        let milestone_edit_route = {{ route('editMilestone', 'milestone_id') }};
                         $.ajax({
                             url: '/edit/milestone/'+response.milestone.id,
                             type: 'GET',

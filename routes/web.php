@@ -11,7 +11,7 @@ use App\Http\Controllers\SocialMediaLinkController;
 use App\Http\Controllers\SocialMediaPlatformController;
 use Illuminate\Support\Facades\Route;
 
-/*
+/**
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -103,8 +103,11 @@ Route::post('/create/milestone/{experience_id}/submit', [MilestoneController::cl
 Route::get('/edit/milestone/{milestone_id}', [MilestoneController::class, 'edit'])->name('editMilestone');
 Route::post('/edit/milestone/{milestone_id}/submit', [MilestoneController::class, 'updateInstance'])->name('milestoneUpdateInstance');
 Route::get('/edit/milestone/{milestone_id}/remove-image', [MilestoneController::class, 'removeImage'])->name('milestoneRemoveImage');
+Route::get('/delete/milestone/{milestone_id}', [MilestoneController::class, 'deleteInstance'])->name('milestoneDeleteInstance');
 
-//resumeProfileUpdate
+/**
+ * Resume Profile Routes.
+ */
 Route::get('/resume-profile/get', [ResumeProfileController::class, 'getInstance'])->name('resumeProfileGet');
 Route::get('/resume-profile/remove-cover-photo', [ResumeProfileController::class, 'removeCoverPhoto'])->name('resumeProfileRemoveCoverPhoto');
 Route::post('/resume-profile/update', [ResumeProfileController::class, 'editInstance'])->name('resumeProfileUpdate');

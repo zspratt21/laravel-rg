@@ -69,8 +69,10 @@ class MilestoneController extends Controller
     {
         if (!empty(Auth::id())) {
             $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
-            File::delete(public_path().$milestone->image);
-            return response()->json($milestone->update(['image' => null]))->header('Content-Type', 'application/json');
+            if (!empty($milestone->image)) {
+                File::delete(public_path().$milestone->image);
+                return response()->json($milestone->update(['image' => null]))->header('Content-Type', 'application/json');
+            }
         }
         return null;
     }
@@ -79,8 +81,13 @@ class MilestoneController extends Controller
     {
         $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
         if (!empty($milestone)) {
-
+            if (!empty($milestone->image)) {
+                $this->removeImage($milestone_id);
+            }
+            $milestone->delete();
+            return true;
         }
+        return null;
     }
 
     public function updateInstance(Request $request, int $milestone_id)
@@ -95,7 +102,7 @@ class MilestoneController extends Controller
                 if (!empty($milestone->image)) {
                     $this->removeImage($milestone_id);
                 }
-                $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
+                $fileName = time().'_'.$request->file('image')->getClientOriginalName();
                 $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
                 $vars['image'] = '/storage/' . $filePath;
             }
@@ -104,5 +111,4 @@ class MilestoneController extends Controller
         }
         return null;
     }
-
 }

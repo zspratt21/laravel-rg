@@ -1,5 +1,12 @@
 <div class="milestone-form-container">
-    <b>Edit Milestone: {{$existing_values['title']}}<span><a class="milestone-form-delete">Delete</a></span></b>
+    <div class="flex">
+        <b>Edit Milestone: {{$existing_values['title']}}</b>
+        <div class="flex items-end justify-end grow">
+            <x-button class="flex items-end justify-end mt-2 milestone-delete" id="delete-milestone">
+                {{ __('Delete') }}
+            </x-button>
+        </div>
+    </div>
     <form action="{{route('milestoneUpdateInstance', $milestone_id)}}" method="post" enctype="multipart/form-data" class="milestone-edit milestone-form">
         @csrf
         <div class="mt-4">
