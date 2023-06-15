@@ -1,8 +1,6 @@
 @extends('form-base')
 @section('head')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <script>
+    <script type="module">
         console.log('hello from experience edit template!');
         console.log({{$experience_id}});
         $(document).ready(function() {
@@ -45,13 +43,13 @@
                 $(this).closest('.milestone-form').find('.milestone-image').val(null);
                 console.log($(this).closest('.milestone-form').find('.milestone-image').val());
                 if ($(this).closest('.milestone-form').hasClass('milestone-edit') === true) {
-                    console.log('id for image remove')
-                    console.log($(this).closest('.milestone-form').find('.milestone-id').val());
+                    let milestone_remove_image_route="{{ route('milestoneRemoveImage',  'milestone_id' )}}"
                     $.ajax({
-                        url: '/edit/milestone/' + $(this).closest('.milestone-form').find('.milestone-id').val() + '/remove-image',
+                        url: milestone_remove_image_route.replace('milestone_id', $(this).closest('.milestone-form').find('.milestone-id').val()),
                         type: 'GET',
                         success: function(response) {
                             console.log(response);
+                            console.log('php derivative test')
                         },
                         error: function(xhr, status, error) {
                             // Handle error

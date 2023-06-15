@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="head">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <script>
+        <script type="module">
             // AJAX form submission
             $(document).ready(function() {
                 $.ajax({
