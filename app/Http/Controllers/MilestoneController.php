@@ -34,7 +34,7 @@ class MilestoneController extends Controller
     public function edit(int $milestone_id)
     {
         if (!empty(Auth::id())) {
-            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            $milestone = Milestone::query()->find($milestone_id);
             if (!empty($milestone)) {
                 $vars = [
                     'milestone_id' => $milestone_id,
@@ -61,7 +61,7 @@ class MilestoneController extends Controller
             $milestone->description = $request->get('description');
             $milestone->experience = $experience_id;
             if (!empty($request->file('image'))) {
-                $fileName = time().'_'.$request->file('image')->getClientOriginalName();
+                $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
                 $filePath = $request->file('image')
                     ->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
                 $milestone->image = '/storage/' . $filePath;
@@ -78,7 +78,7 @@ class MilestoneController extends Controller
     public function removeImage(int $milestone_id)
     {
         if (!empty(Auth::id())) {
-            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            $milestone = Milestone::query()->find($milestone_id);
             if (!empty($milestone->image)) {
                 File::delete(public_path().$milestone->image);
                 return $milestone->update(['image' => null]);
@@ -90,7 +90,7 @@ class MilestoneController extends Controller
     public function deleteInstance(int $milestone_id)
     {
         if (!empty(Auth::id())) {
-            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            $milestone = Milestone::query()->find($milestone_id);
             if (!empty($milestone)) {
                 if (!empty($milestone->image)) {
                     $this->removeImage($milestone_id);
@@ -104,7 +104,7 @@ class MilestoneController extends Controller
     public function updateInstance(Request $request, int $milestone_id)
     {
         if (!empty(Auth::id())) {
-            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            $milestone = Milestone::query()->find($milestone_id);
             if (!empty($milestone)) {
                 $vars = [
                     'title' => $request->get('title'),
