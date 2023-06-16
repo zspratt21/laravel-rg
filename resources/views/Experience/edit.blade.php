@@ -1,8 +1,6 @@
 @extends('form-base')
 @section('head')
     <script type="module">
-        console.log('hello from experience edit template!');
-        console.log({{$experience_id}});
         $(document).ready(function() {
             $('#experienceUpdate').submit(function(e) {
                 e.preventDefault();
@@ -12,20 +10,21 @@
                     }
                 });
                 let formData = new FormData(this);
+                let formAction = $(this).attr('action');
                 $.ajax({
                     _token: "{{ csrf_token() }}",
-                    url: '{{ route('experienceUpdateInstance', ['experience_id' => $experience_id]) }}',
+                    url: formAction,
                     type: 'POST',
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Handle the response from the server
-                        console.log('noice');
+                        console.log(response);
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
             });
@@ -39,39 +38,37 @@
             $(document).on('click', '.remove-photo', function (e) {
                 $(this).closest('.milestone-form').find('.photo-preview').attr('src', '');
                 $(this).closest('.milestone-form').find('.photo-preview').addClass('hidden');
-                console.log($(this).closest('.milestone-form').find('.milestone-image').val());
                 $(this).closest('.milestone-form').find('.milestone-image').val(null);
-                console.log($(this).closest('.milestone-form').find('.milestone-image').val());
+                let button = $(this);
                 if ($(this).closest('.milestone-form').hasClass('milestone-edit') === true) {
-                    let milestone_remove_image_route = "{{ route('milestoneRemoveImage',  ['milestone_id' => 'milestone_id'] )}}"
                     $.ajax({
-                        url: milestone_remove_image_route.replace('milestone_id', $(this).closest('.milestone-form').find('.milestone-id').val()),
+                        url: button.attr('action'),
                         type: 'GET',
                         success: function(response) {
                             console.log(response);
-                            console.log('php derivative test')
                         },
                         error: function(xhr, status, error) {
-                            // Handle error
                             console.log(xhr.responseText);
+                            console.log(status);
+                            console.log(error);
                         }
                     });
                 }
             });
             $(document).on('click', '.milestone-delete', function (e) {
-                let formContainer = $(this).closest('.milestone-form-container');
+                let button = $(this);
                 if ($(this).closest('.milestone-form-container').find('.milestone-form').hasClass('milestone-edit') === true) {
-                    let milestone_delete_instance_route = "{{ route('milestoneDeleteInstance',  ['milestone_id' => 'milestone_id'] )}}"
                     $.ajax({
-                        url: milestone_delete_instance_route.replace('milestone_id', $(this).closest('.milestone-form-container').find('.milestone-id').val()),
+                        url: button.attr('action'),
                         type: 'GET',
                         success: function(response) {
                             console.log(response);
-                            formContainer.remove();
+                            button.closest('.milestone-form-container').remove();
                         },
                         error: function(xhr, status, error) {
-                            // Handle error
                             console.log(xhr.responseText);
+                            console.log(status);
+                            console.log(error);
                         }
                     });
                 }
@@ -109,8 +106,9 @@
                                     formInstance.closest('.milestone-form-container').remove();
                                 },
                                 error: function(xhr, status, error) {
-                                    // Handle error
                                     console.log(xhr.responseText);
+                                    console.log(status);
+                                    console.log(error);
                                 }
                             });
                         }
@@ -132,8 +130,9 @@
                         $('#milestones').append(response.html);
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
             });
@@ -185,11 +184,7 @@
             <x-select name="entity" class="block mt-1 w-full" id="entity">
                 @section('options')
                     @foreach ($entity_options as $id => $name)
-                        <option value="{{$id}}"
-                                @if($id == $existing_values['entity'])
-                                selected
-                            @endif
-                        >{{$name}}</option>
+                        <option value="{{$id}}" @if($id == $existing_values['entity']) selected @endif >{{$name}}</option>
                     @endforeach
                 @overwrite
             </x-select>

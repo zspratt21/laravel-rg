@@ -2,7 +2,7 @@
     <div class="flex">
         <b>Add New Milestone</b>
         <div class="flex items-end justify-end grow">
-            <x-button class="flex items-end justify-end mt-2 milestone-delete" id="delete-milestone">
+            <x-button class="flex items-end justify-end mt-2 milestone-delete">
                 {{ __('Delete') }}
             </x-button>
         </div>
@@ -19,18 +19,17 @@
         </div>
         <div class="mt-4">
             <div class="mt-2">
-                <img height="50" src="" class="h-20 photo-preview hidden" id="photo_preview">
+                <img height="50" src="" class="h-20 photo-preview hidden">
             </div>
             <x-label class="custom-file-label" for="image">Image</x-label>
             <x-input type="file" name="image" class="hidden" id="image" class="milestone-image hidden"/>
-            <x-secondary-button class="mt-2 mr-2" type="button" id="select_photo" class="select-photo">
+            <x-secondary-button class="mt-2 mr-2" type="button" class="select-photo">
                 {{ __('Select A New Photo') }}
             </x-secondary-button>
-            <x-secondary-button type="button" class="mt-2 remove-photo" id="remove_photo">
+            <x-secondary-button type="button" class="mt-2 remove-photo">
                 {{ __('Remove Photo') }}
             </x-secondary-button>
         </div>
-        <input name="experience" class="hidden" id="experience" value="{{$experience_id}}"/>
         <input type="submit" class="hidden">
     </form>
 </div>

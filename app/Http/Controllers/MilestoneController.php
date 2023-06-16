@@ -13,56 +13,65 @@ class MilestoneController extends Controller
 {
     public function createForm(int $experience_id)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
+        if (!empty(Auth::id())) {
+            $experience = Experience::query()
+                ->where('user', '=', Auth::id())
+                ->where('id', '=', $experience_id)
+                ->first();
+            if (!empty($experience)) {
+                $vars = [
+                    'experience_id' => $experience_id,
+                ];
+                $response_vars = [
+                    'html' => view('Milestone/create', $vars)->render(),
+                ];
+                return Response::json($response_vars);
+            }
         }
-        $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
-        if (empty($experience)) {
-            return null;
-        }
-        $vars = [
-            'experience_id' => $experience_id,
-        ];
-        $response_vars = [
-            'html' => view('Milestone/create', $vars)->render(),
-        ];
-        return Response::json($response_vars);
+        return redirect()->route('login');
     }
 
     public function edit(int $milestone_id)
     {
-        $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
-        $vars = [
-            'milestone_id' => $milestone_id,
-            'existing_values' => [
-                'title' => $milestone->title,
-                'description' => $milestone->description,
-                'image' => !empty($milestone->image) ? url($milestone->image) : '',
-            ]
-        ];
-        $response_vars = [
-            'html' => view('Milestone/edit', $vars)->render(),
-        ];
-        return Response::json($response_vars);
+        if (!empty(Auth::id())) {
+            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            if (!empty($milestone)) {
+                $vars = [
+                    'milestone_id' => $milestone_id,
+                    'existing_values' => [
+                        'title' => $milestone->title,
+                        'description' => $milestone->description,
+                        'image' => !empty($milestone->image) ? url($milestone->image) : '',
+                    ]
+                ];
+                $response_vars = [
+                    'html' => view('Milestone/edit', $vars)->render(),
+                ];
+                return Response::json($response_vars);
+            }
+        }
+        return redirect()->route('login');
     }
 
     public function createInstance(Request $request, int $experience_id)
     {
-        $milestone = new Milestone();
-        $milestone->title = $request->get('title');
-        $milestone->description = $request->get('description');
-        $milestone->experience = $experience_id;
-        if (!empty($request->file('image'))) {
-            $fileName = !empty($request->file('image')) ? time().'_'.$request->file('image')->getClientOriginalName() : 'no image was uploaded';
-            $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
-            $milestone->image = '/storage/' . $filePath;
+        if (!empty(Auth::id())) {
+            $milestone = new Milestone();
+            $milestone->title = $request->get('title');
+            $milestone->description = $request->get('description');
+            $milestone->experience = $experience_id;
+            if (!empty($request->file('image'))) {
+                $fileName = time().'_'.$request->file('image')->getClientOriginalName();
+                $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
+                $milestone->image = '/storage/' . $filePath;
+            }
+            $vars = [
+                'milestone' => $milestone,
+                'created' => $milestone->save(),
+            ];
+            return Response::json($vars);
         }
-        $vars = [
-            // @debug remove and only return created bool
-            'milestone' => $milestone,
-            'created' => $milestone->save(),
-        ];
-        return Response::json($vars);
+        return redirect()->route('login');
     }
 
     public function removeImage(int $milestone_id)
@@ -71,44 +80,47 @@ class MilestoneController extends Controller
             $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
             if (!empty($milestone->image)) {
                 File::delete(public_path().$milestone->image);
-                return response()->json($milestone->update(['image' => null]))->header('Content-Type', 'application/json');
+                return $milestone->update(['image' => null]);
             }
         }
-        return null;
+        return redirect()->route('login');
     }
 
     public function deleteInstance(int $milestone_id)
     {
-        $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
-        if (!empty($milestone)) {
-            if (!empty($milestone->image)) {
-                $this->removeImage($milestone_id);
+        if (!empty(Auth::id())) {
+            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            if (!empty($milestone)) {
+                if (!empty($milestone->image)) {
+                    $this->removeImage($milestone_id);
+                }
+                return $milestone->delete();
             }
-            $milestone->delete();
-            return true;
         }
-        return null;
+        return redirect()->route('login');
     }
 
     public function updateInstance(Request $request, int $milestone_id)
     {
-        $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
-        if (!empty($milestone)) {
-            $vars = [
-                'title' => $request->get('title'),
-                'description' => $request->get('description'),
-            ];
-            if (!empty($request->file('image'))) {
-                if (!empty($milestone->image)) {
-                    $this->removeImage($milestone_id);
+        if (!empty(Auth::id())) {
+            $milestone = Milestone::query()->where('id', '=', $milestone_id)->first();
+            if (!empty($milestone)) {
+                $vars = [
+                    'title' => $request->get('title'),
+                    'description' => $request->get('description'),
+                ];
+                if (!empty($request->file('image'))) {
+                    if (!empty($milestone->image)) {
+                        $this->removeImage($milestone_id);
+                    }
+                    $fileName = time().'_'.$request->file('image')->getClientOriginalName();
+                    $filePath = $request->file('image')
+                        ->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
+                    $vars['image'] = '/storage/' . $filePath;
                 }
-                $fileName = time().'_'.$request->file('image')->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
-                $vars['image'] = '/storage/' . $filePath;
+                return $milestone->update($vars);
             }
-            $milestone->update($vars);
-            return Response::json($vars);
         }
-        return null;
+        return redirect()->route('login');
     }
 }
