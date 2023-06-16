@@ -62,7 +62,8 @@ class MilestoneController extends Controller
             $milestone->experience = $experience_id;
             if (!empty($request->file('image'))) {
                 $fileName = time().'_'.$request->file('image')->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
+                $filePath = $request->file('image')
+                    ->storeAs('uploads/images/milestone', urlencode($fileName), 'public');
                 $milestone->image = '/storage/' . $filePath;
             }
             $vars = [
