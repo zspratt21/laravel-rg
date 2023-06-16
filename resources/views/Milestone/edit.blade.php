@@ -20,9 +20,9 @@
         <div class="mt-4">
             <div class="mt-2">
                 @if(!empty($existing_values['image']))
-                    <img height="50" src="{{$existing_values['image']}}" class="h-20 photo-preview" id="photo_preview">
+                    <img height="50" src="{{$existing_values['image']}}" class="h-20 photo-preview">
                 @else
-                    <img height="50" src="" class="h-20 photo-preview hidden" id="photo_preview">
+                    <img height="50" src="" class="h-20 photo-preview hidden">
                 @endif
             </div>
             <x-label class="custom-file-label" for="image">Image</x-label>
@@ -30,7 +30,7 @@
             <x-secondary-button class="mt-2 mr-2" type="button" id="select_photo" class="select-photo">
                 {{ __('Select A New Photo') }}
             </x-secondary-button>
-            <x-secondary-button type="button" class="mt-2 remove-photo" id="remove_photo">
+            <x-secondary-button type="button" class="mt-2 remove-photo" id="remove_photo" action="{{route('milestoneRemoveImage', $milestone_id)}}">
                 {{ __('Remove Photo') }}
             </x-secondary-button>
         </div>

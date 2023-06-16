@@ -79,7 +79,7 @@
                     $(this).closest('.milestone-form-container').remove();
                 }
             });
-            $(document).on('submit', '.milestone-edit', function (e) {
+            $(document).on('submit', '.milestone-form', function (e) {
                 e.preventDefault();
                 $.ajaxSetup({
                     headers: {
@@ -87,66 +87,38 @@
                     }
                 });
                 let formData = new FormData(this);
-                let milestone_edit_submit_route = "{{ route('milestoneUpdateInstance',  ['milestone_id' => 'milestone_id'] )}}";
+                let formInstance = $(this);
                 $.ajax({
                     _token: "{{ csrf_token() }}",
-                    url: milestone_edit_submit_route.replace('milestone_id', formData.get('id')),
+                    url: formInstance.attr('action'),
                     type: 'POST',
                     data: formData,
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Handle the response from the server
-                        console.log('edit blade line 63');
                         console.log(response);
+                        if (formInstance.hasClass('milestone-create')){
+                            let milestone_edit_route = "{{ route('editMilestone', 'milestone_id') }}";
+                            $.ajax({
+                                url: milestone_edit_route.replace('milestone_id', response.milestone.id),
+                                type: 'GET',
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    $('#milestones').append(response.html);
+                                    formInstance.closest('.milestone-form-container').remove();
+                                },
+                                error: function(xhr, status, error) {
+                                    // Handle error
+                                    console.log(xhr.responseText);
+                                }
+                            });
+                        }
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
-                    }
-                });
-            });
-
-            $(document).on('submit', '.milestone-create', function (e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                let formData = new FormData(this);
-                console.log($(this));
-                let form = $(this);
-                $.ajax({
-                    _token: "{{ csrf_token() }}",
-                    url: '{{ route('milestoneCreateInstance', ['experience_id' => $experience_id]) }}',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        // Handle the response from the server
-                        console.log('edit blade line 52');
-                        console.log(response.milestone.id);
-                        let milestone_edit_route = {{ route('editMilestone', 'milestone_id') }};
-                        $.ajax({
-                            url: '/edit/milestone/'+response.milestone.id,
-                            type: 'GET',
-                            contentType: false,
-                            processData: false,
-                            success: function(response) {
-                                $('#milestones').append(response.html);
-                                form.closest('.milestone-form-container').remove();
-                            },
-                            error: function(xhr, status, error) {
-                                // Handle error
-                                console.log(xhr.responseText);
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error
-                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
             });
@@ -167,10 +139,7 @@
             });
             $('#update').on('click',function(e) {
                 $('#experienceUpdate').trigger('submit');
-                $('.milestone-create').each(function(){
-                    $(this).trigger('submit');
-                });
-                $('.milestone-edit').each(function(){
+                $('.milestone-form').each(function(){
                     $(this).trigger('submit');
                 });
             });
