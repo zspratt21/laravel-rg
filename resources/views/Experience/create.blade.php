@@ -30,7 +30,6 @@
                     @endforeach
                 @endsection
             </x-select>
-            {{-- @todo determine best layout for entity reference (searchable select?) --}}
         </div>
         <div class="mt-4">
             <x-label for="type">Organisation</x-label>

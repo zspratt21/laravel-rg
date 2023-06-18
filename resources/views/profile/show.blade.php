@@ -1,26 +1,23 @@
 <x-app-layout>
     <x-slot name="head">
         <script type="module">
-            // AJAX form submission
             $(document).ready(function() {
                 $.ajax({
                     url: '{{ route('resumeProfileGet') }}',
                     type: 'GET',
                     success: function(response) {
-                        // Handle the response from the server
                         console.log(response);
-                        console.log(response.cover_photo);
                         $('#address').val(response.address);
                         $('#mobile').val(response.mobile);
                         $('#introduction').val(response.introduction);
-                        console.log(response.cover_photo);
                         if($.type(response.cover_photo) === 'string') {
                             $('#photo_preview').attr('src', response.cover_photo);
                         }
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
                 $('#select_photo').on('click',function(e) {
@@ -30,23 +27,20 @@
                     $('#photo_preview').attr('src', window.URL.createObjectURL(this.files[0]));
                 });
                 $('#remove_photo').on('click',function(e) {
-                    // Remove photo from model
                     $.ajax({
                         url: '{{ route('resumeProfileRemoveCoverPhoto') }}',
                         type: 'GET',
                         success: function(response) {
-                            // Handle the response from the server
                             console.log(response);
                         },
                         error: function(xhr, status, error) {
-                            // Handle error
                             console.log(xhr.responseText);
+                            console.log(status);
+                            console.log(error);
                         }
                     });
-                    // Remove photo from input
-
-                    // Remove photo from preview img tag
                     $('#photo_preview').attr('src', '');
+                    $('#cover_photo').val(null);
                 });
                 $('#resumeProfileUpdate').submit(function(e) {
                     e.preventDefault();
@@ -64,12 +58,12 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
-                            // Handle the response from the server
                             console.log(response);
                         },
                         error: function(xhr, status, error) {
-                            // Handle error
                             console.log(xhr.responseText);
+                            console.log(status);
+                            console.log(error);
                         }
                     });
                 });
@@ -126,10 +120,6 @@
                         </div>
                     </x-slot>
                     <x-slot name="actions">
-{{--                        <x-action-message class="mr-3" on="saved">--}}
-{{--                            {{ __('Saved.') }}--}}
-{{--                        </x-action-message>--}}
-
                         <x-button>
                             {{ __('Save') }}
                         </x-button>

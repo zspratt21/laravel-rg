@@ -27,7 +27,7 @@ class EntityController extends Controller
         dump($request->file('logo'));
         dump($request->get('name'));
         dump($request->get('description'));
-        $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+        $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
         dump($fileName);
         $filePath = $request->file('logo')->storeAs('uploads/images/entity', urlencode($fileName), 'public');
         $entity = new Entity();
@@ -64,7 +64,7 @@ class EntityController extends Controller
             'existing_values' => [
                 'name' => $entity->name,
                 'description' => $entity->description,
-                'logo' => !empty($entity->logo) ? url($entity->logo): '',
+                'logo' => !empty($entity->logo) ? url($entity->logo) : '',
             ],
             'entity_id' => $entity_id,
         ];
@@ -75,7 +75,7 @@ class EntityController extends Controller
     {
         if (!empty(Auth::id())) {
             $entity = Entity::query()->where('id', '=', $entity_id)->first();
-            File::delete(public_path().$entity->logo);
+            File::delete(public_path() . $entity->logo);
             return response()->json($entity->update(['logo' => null]))->header('Content-Type', 'application/json');
         }
         return null;
@@ -100,7 +100,7 @@ class EntityController extends Controller
                     'logo' => 'required|image|max:2048'
                 ]);
                 $this->removeLogo($entity_id);
-                $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+                $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
                 $filePath = $request->file('logo')->storeAs('uploads/images/entity', urlencode($fileName), 'public');
                 $vars['logo'] = '/storage/' . $filePath;
             }
@@ -108,28 +108,5 @@ class EntityController extends Controller
             return redirect()->route('listEntities');
         }
         return redirect()->route('dashboard');
-    }
-
-    public function show(int $entity_id)
-    {
-        $entity = Entity::query()->where('id', '=', $entity_id)->first();
-        $vars = [
-            'name' => $entity->name,
-            'description' => $entity->description,
-            'logo' => url($entity->logo),
-        ];
-        return view('Entity/show', $vars);
-    }
-
-    public function print(int $entity_id)
-    {
-        $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
-        $config = [
-            'document'  => $this->show($entity_id)->render(),
-            'debugSettings' => ['all' => true],
-        ];
-        $result = $pdfreactor->convertAsBinary($config);
-        header("Content-Type: application/pdf");
-        echo $result;
     }
 }

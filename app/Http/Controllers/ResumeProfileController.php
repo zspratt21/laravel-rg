@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\File;
 
 class ResumeProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function getInstance()
     {
         if (empty(Auth::id())) {
@@ -24,12 +28,12 @@ class ResumeProfileController extends Controller
         return response()->json($vars)->header('Content-Type', 'application/json');
     }
 
-    public function removeCoverPhoto(Request $request)
+    public function removeCoverPhoto()
     {
-        if (!empty(Auth::id())) {
-            $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
-            File::delete(public_path().$profile->cover_photo);
-            return response()->json($profile->update(['cover_photo' => null]))->header('Content-Type', 'application/json');
+        $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
+        if (!empty($profile->cover_photo)) {
+            File::delete(public_path() . $profile->cover_photo);
+            return response()->json($profile->update(['cover_photo' => null]));
         }
         return null;
     }
@@ -46,12 +50,13 @@ class ResumeProfileController extends Controller
                 'cover_photo' => 'required|image|max:20480'
             ]);
             $this->removeCoverPhoto($request);
-            $fileName = time().'_'.$request->file('cover_photo')->getClientOriginalName();
-            echo 'file name '.urlencode($fileName);
-            $filePath = $request->file('cover_photo')->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');
+            $fileName = time() . '_' . $request->file('cover_photo')->getClientOriginalName();
+            echo 'file name ' . urlencode($fileName);
+            $filePath = $request->file('cover_photo')
+                ->storeAs('uploads/images/resume-profile/cover-photo', urlencode($fileName), 'public');
             $vars['cover_photo'] = '/storage/' . $filePath;
         }
         $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
-        $profile->update($vars);
+        return $profile->update($vars);
     }
 }

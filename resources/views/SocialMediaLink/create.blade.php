@@ -3,6 +3,7 @@
     {{ __('Create New Social Media Link') }}
 @endsection
 @section('content')
+{{--  @todo consider adding to profile via dynamic ajax  --}}
     <form action="{{route('socialLinkCreateInstance')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">

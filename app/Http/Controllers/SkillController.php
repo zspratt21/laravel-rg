@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\File;
 
 class SkillController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function createForm()
     {
         if (empty(Auth::id())) {

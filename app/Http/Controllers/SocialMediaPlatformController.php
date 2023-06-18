@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\File;
 
 class SocialMediaPlatformController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function createForm()
     {
         if (empty(Auth::id())) {
@@ -25,9 +29,10 @@ class SocialMediaPlatformController extends Controller
         dump($request);
         dump($request->file('logo'));
         dump($request->get('name'));
-        $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+        $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
         dump(urlencode($fileName));
-        $filePath = $request->file('logo')->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
+        $filePath = $request->file('logo')
+            ->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
         $social_media_platform = new SocialMediaPlatform();
         $social_media_platform->name = $request->get('name');
         $social_media_platform->logo = '/storage/' . $filePath;
@@ -51,7 +56,7 @@ class SocialMediaPlatformController extends Controller
         $vars = [
             'existing_values' => [
                 'name' => $social_media_platform->name,
-                'logo' => !empty($social_media_platform->logo) ? url($social_media_platform->logo): '',
+                'logo' => !empty($social_media_platform->logo) ? url($social_media_platform->logo) : '',
             ],
             'social_id' => $social_id,
         ];
@@ -62,8 +67,8 @@ class SocialMediaPlatformController extends Controller
     {
         if (!empty(Auth::id())) {
             $social_media_platform = SocialMediaPlatform::query()->where('id', '=', $social_id)->first();
-            File::delete(public_path().$social_media_platform->logo);
-            return response()->json($social_media_platform->update(['logo' => null]))->header('Content-Type', 'application/json');
+            File::delete(public_path() . $social_media_platform->logo);
+            return response()->json($social_media_platform->update(['logo' => null]));
         }
         return null;
     }
@@ -86,7 +91,7 @@ class SocialMediaPlatformController extends Controller
                     'logo' => 'required|image|max:2048'
                 ]);
                 $this->removeLogo($social_id);
-                $fileName = time().'_'.$request->file('logo')->getClientOriginalName();
+                $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
                 $filePath = $request->file('logo')->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
                 $vars['logo'] = '/storage/' . $filePath;
             }

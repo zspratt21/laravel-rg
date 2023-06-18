@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class SkillLinkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
     public function createLink(int $skill_id) {
         $skill_link = new SkillLink();
         $skill_link->skill = $skill_id;

@@ -7,15 +7,16 @@ use App\Models\Experience;
 use App\Models\Milestone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 
 class ExperienceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function createForm()
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $entities = Entity::all(['name', 'id']);
         $entity_options = [];
         foreach ($entities as $entity) {
@@ -33,14 +34,14 @@ class ExperienceController extends Controller
 
     public function createInstance(Request $request)
     {
-        dump($request);
-        dump($request->get('title'));
-        dump($request->get('description'));
-        dump($request->get('date_started'));
-        dump($request->get('date_ended'));
-        dump($request->get('entity'));
-        dump($request->get('type'));
-        dump(Auth::id());
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_started' => 'required|date',
+            'date_ended' => 'required|date',
+            'entity' => 'required|int',
+            'type' => 'required|string|max:255',
+        ]);
         $experience = new Experience();
         $experience->title = $request->get('title');
         $experience->description = $request->get('description');
@@ -56,68 +57,51 @@ class ExperienceController extends Controller
 
     public function edit(int $experience_id)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $experience = Experience::query()
             ->where('id', '=', $experience_id)
             ->where('user', '=', Auth::id())
             ->first();
-        if (empty($experience)) {
-            return redirect()->route('dashboard');
-        }
-        $entities = Entity::all(['name', 'id']);
-        $entity_options = [];
-        foreach ($entities as $entity) {
-            $entity_options[$entity->id] = $entity->name;
-        }
-        $milestone_fields = [
-            'id',
-            'title',
-            'description',
-            'image',
-        ];
-        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get($milestone_fields);
-        $milestone_edit_forms = [];
-        foreach ($milestones as $milestone) {
+        if (!empty($experience)) {
+            $entities = Entity::all(['name', 'id']);
+            $entity_options = [];
+            foreach ($entities as $entity) {
+                $entity_options[$entity->id] = $entity->name;
+            }
+            $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
+            $milestone_edit_forms = [];
+            if (!empty($milestones)) {
+                foreach ($milestones as $milestone) {
+                    $vars = [
+                        'milestone_id' => $milestone->id,
+                        'existing_values' => [
+                            'title' => $milestone->title,
+                            'description' => $milestone->description,
+                            'image' => !empty($milestone->image) ? url($milestone->image) : '',
+                        ],
+                    ];
+                    $milestone_edit_forms[] = view('Milestone/edit', $vars)->render();
+                }
+            }
             $vars = [
-                'milestone_id' => $milestone->id,
+                'type_options' => [
+                    'experience' => 'Employment',
+                    'education' => 'Education',
+                ],
+                'entity_options' => $entity_options,
                 'existing_values' => [
-                    'title' => $milestone->title,
-                    'description' => $milestone->description,
-                    'image' => !empty($milestone->image) ? url($milestone->image) : '',
-                ]
+                    'title' => $experience->title,
+                    'description' => $experience->description,
+                    'date_started' => $experience->date_started,
+                    'date_ended' => $experience->date_ended,
+                    'entity' => $experience->entity,
+                    'type' => $experience->type,
+                ],
+                'experience_id' => $experience_id,
+                'milestone_edit_forms' => $milestone_edit_forms,
             ];
-            $milestone_edit_forms[] = view('Milestone/edit', $vars)->render();
+            return view('experience/edit', $vars);
         }
-        $vars = [
-            'type_options' => [
-                'experience' => 'Employment',
-                'education' => 'Education',
-            ],
-            'entity_options' => $entity_options,
-            'existing_values' => [
-                'title' => $experience->title,
-                'description' => $experience->description,
-                'date_started' => $experience->date_started,
-                'date_ended' => $experience->date_ended,
-                'entity' => $experience->entity,
-                'type' => $experience->type,
-            ],
-            'experience_id' => $experience_id,
-            'milestone_edit_forms' => $milestone_edit_forms,
-        ];
-        return view('experience/edit', $vars);
-    }
-
-    public function getMilestones(int $experience_id)
-    {
-        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get(['id']);
-        foreach ($milestones as $milestone) {
-            dump($milestone->id);
-//            dump($this->edit($milestone->id));
-        }
-        return Response::json(['milestones' => $milestones]);
+        return response()->json(['error' => 'Experience does not exist'], 404);
     }
 
     // @todo add in other details from entity to make it look nice
@@ -132,6 +116,14 @@ class ExperienceController extends Controller
 
     public function updateInstance(Request $request, int $experience_id)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'date_started' => 'required|date',
+            'date_ended' => 'required|date',
+            'entity' => 'required|int',
+            'type' => 'required|string|max:255',
+        ]);
         $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
         if (!empty($experience)) {
             $vars = [
@@ -142,15 +134,20 @@ class ExperienceController extends Controller
                 'entity' => $request->get('entity'),
                 'type' => $request->get('type'),
             ];
-            $experience->update($vars);
+            return $experience->update($vars);
         }
-        return redirect()->route('dashboard');
+        return response()->json(['error' => 'Experience does not exist'], 404);
     }
 
-    public function show(int $experience_id)
+    public function deleteInstance(int $experience_id)
     {
-        $experience = Experience::query()->where('id', '=', $experience_id)->first();
-        $vars = [];
-        return view('experience/show', $vars);
+        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
+        if (!empty($milestones)) {
+            $controller = new MilestoneController();
+            foreach ($milestones as $milestone) {
+                $controller->deleteInstance($milestone->id);
+            }
+        }
+        return Experience::query()->find($experience_id)->delete();
     }
 }
