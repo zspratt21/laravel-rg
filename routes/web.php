@@ -62,7 +62,7 @@ Route::post('/create/skill', [SkillController::class, 'createInstance'])->name('
 Route::get('/edit/skill/{skill_id}', [SkillController::class, 'edit'])->name('editSkill');
 Route::post('/edit/skill/{skill_id}', [SkillController::class, 'updateInstance'])->name('skillUpdateInstance');
 Route::get('/skill/{skill_id}/remove-logo', [SkillController::class, 'removeIcon'])->name('skillRemoveIcon');
-Route::get('/skill/{skill_id}', [SkillController::class, 'show']);
+Route::get('/delete/skill/{skill_id}', [SkillController::class, 'delete'])->name('deleteSkill');
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'createLink'])->name('skillCreateLink');
 
 /**
@@ -73,8 +73,7 @@ Route::get('/create/experience', [ExperienceController::class, 'createForm'])->n
 Route::post('/create/experience', [ExperienceController::class, 'createInstance'])->name('experienceCreateInstance');
 Route::get('/edit/experience/{experience_id}', [ExperienceController::class, 'edit'])->name('editExperience');
 Route::post('/edit/experience/{experience_id}/submit', [ExperienceController::class, 'updateInstance'])->name('experienceUpdateInstance');
-Route::get('/experience/{experience_id}', [ExperienceController::class, 'show']);
-Route::get('/experience/{experience_id}/print', [ExperienceController::class, 'print']);
+Route::get('/delete/experience/{experience_id}', [ExperienceController::class, 'deleteInstance'])->name('deleteExperience');
 
 /**
  * Social Media Platform Callback Routes.

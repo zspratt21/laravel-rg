@@ -16,6 +16,7 @@
                 <h3>{{$experience->title}}</h3>
                 <span>{{$experience->entity}}</span>
                 <a href="{{route('editExperience', $experience->id)}}">Edit</a>
+                <a href="{{route('deleteExperience', $experience->id)}}">Delete</a>
             </div>
         @endforeach
     </div>
