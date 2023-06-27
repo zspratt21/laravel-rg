@@ -11,6 +11,5 @@ class Entity extends Model
     protected $fillable = [
         'name',
         'logo',
-        'description',
     ];
 }

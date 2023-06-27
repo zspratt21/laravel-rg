@@ -15,15 +15,14 @@
                     url: '{{ route('socialRemoveLogo', $social_id) }}',
                     type: 'GET',
                     success: function(response) {
-                        // Remove photo from input
-                        // @ jquery empty value
-                        // Remove photo from preview img tag
                         $('#photo_preview').attr('src', '');
                         $('#photo_preview').addClass('hidden');
+                        $('#logo').val(null);
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
             });

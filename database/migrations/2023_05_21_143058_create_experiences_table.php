@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('date_started');
-            $table->date('date_ended');
+            $table->date('date_ended')->nullable();
             $table->integer('entity');
             $table->string('type');
             $table->integer('user');

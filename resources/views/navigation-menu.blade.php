@@ -22,7 +22,7 @@
                                 <x-dropdown-link href="{{ route('createEntity') }}">
                                     {{ __('Entity') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('createSkill') }}">
+                                <x-dropdown-link href="{{ route('skillCreate') }}">
                                     {{ __('Skill') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('createExperience') }}">

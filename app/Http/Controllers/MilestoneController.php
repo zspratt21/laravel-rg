@@ -22,7 +22,7 @@ class MilestoneController extends Controller
             ->where('id', '=', $experience_id)
             ->exists();
     }
-    public function createForm(int $experience_id)
+    public function create(int $experience_id)
     {
         if ($this->checkExperience($experience_id)) {
             $vars = [
@@ -58,7 +58,7 @@ class MilestoneController extends Controller
         return response()->json(['error' => 'Milestone does not exist'], 404);
     }
 
-    public function createInstance(Request $request, int $experience_id)
+    public function store(Request $request, int $experience_id)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -93,7 +93,7 @@ class MilestoneController extends Controller
         return response()->json(['error' => 'Milestone does not exist'], 404);
     }
 
-    public function deleteInstance(int $milestone_id)
+    public function delete(int $milestone_id)
     {
         $milestone = Milestone::query()->find($milestone_id);
         if (!empty($milestone)) {
@@ -105,7 +105,7 @@ class MilestoneController extends Controller
         return response()->json(['error' => 'Milestone does not exist'], 404);
     }
 
-    public function updateInstance(Request $request, int $milestone_id)
+    public function update(Request $request, int $milestone_id)
     {
         $request->validate([
             'title' => 'required|string|max:255',

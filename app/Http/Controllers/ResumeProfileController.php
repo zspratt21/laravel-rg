@@ -13,11 +13,8 @@ class ResumeProfileController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function getInstance()
+    public function edit()
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $profile = ResumeProfile::query()->where('user', '=', Auth::id())->first();
         $vars = [
             'address' => $profile->address,
@@ -25,7 +22,7 @@ class ResumeProfileController extends Controller
             'introduction' => $profile->introduction,
             'cover_photo' => url($profile->cover_photo),
         ];
-        return response()->json($vars)->header('Content-Type', 'application/json');
+        return response()->json($vars);
     }
 
     public function removeCoverPhoto()
@@ -38,7 +35,7 @@ class ResumeProfileController extends Controller
         return null;
     }
 
-    public function editInstance(Request $request)
+    public function update(Request $request)
     {
         $vars = [
             'address' => $request->get('address'),

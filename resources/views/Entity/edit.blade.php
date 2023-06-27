@@ -15,15 +15,14 @@
                     url: '{{ route('entityRemoveLogo', $entity_id) }}',
                     type: 'GET',
                     success: function(response) {
-                        // Remove photo from input
-                        // @ jquery empty value
-                        // Remove photo from preview img tag
                         $('#photo_preview').attr('src', '');
                         $('#photo_preview').addClass('hidden');
+                        $('#logo').val(null);
                     },
                     error: function(xhr, status, error) {
-                        // Handle error
                         console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
                     }
                 });
             });
@@ -39,10 +38,6 @@
         <div class="mt-4">
             <x-label class="custom-file-label" for="name">Name</x-label>
             <x-input type="text" name="name" class="block mt-1 w-full" id="name" value="{{$existing_values['name']}}"/>
-        </div>
-        <div class="mt-4">
-            <x-label class="custom-file-label" for="description">Description</x-label>
-            <x-textarea type="textarea" name="description" class="block mt-1 w-full" id="description">@section('initial_value'){{$existing_values['description']}}@endsection</x-textarea>
         </div>
         <div class="mt-4">
             <div class="mt-2">

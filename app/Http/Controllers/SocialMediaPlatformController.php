@@ -13,15 +13,12 @@ class SocialMediaPlatformController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function createForm()
+    public function create()
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         return view('SocialMediaPlatform/create');
     }
 
-    public function createInstance(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'logo' => 'required|image|max:2048'
@@ -44,9 +41,6 @@ class SocialMediaPlatformController extends Controller
 
     public function edit(Request $request, int $social_id)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $social_media_platform = SocialMediaPlatform::query()
             ->where('id', '=', $social_id)
             ->first();
@@ -65,28 +59,25 @@ class SocialMediaPlatformController extends Controller
 
     public function removeLogo(int $social_id)
     {
-        if (!empty(Auth::id())) {
-            $social_media_platform = SocialMediaPlatform::query()->where('id', '=', $social_id)->first();
-            File::delete(public_path() . $social_media_platform->logo);
-            return response()->json($social_media_platform->update(['logo' => null]));
+        $social_media_platform = SocialMediaPlatform::query()->find($social_id);
+        if (!empty($social_media_platform)) {
+            if (!empty($social_media_platform->logo)) {
+                File::delete(public_path() . $social_media_platform->logo);
+                return response()->json($social_media_platform->update(['logo' => null]));
+            }
         }
+        // @todo correct error message here!
         return null;
     }
 
-    public function updateInstance(Request $request, int $social_id)
+    public function update(Request $request, int $social_id)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
-        $social = SocialMediaPlatform::query()
-            ->where('id', '=', $social_id)
-            ->first();
+        $social = SocialMediaPlatform::query()->find($social_id);
         if (!empty($social)) {
             $vars = [
                 'name' => $request->get('name'),
             ];
-            $logo = $request->file('logo');
-            if (!empty($logo)) {
+            if (!empty($request->file('logo'))) {
                 $request->validate([
                     'logo' => 'required|image|max:2048'
                 ]);
@@ -98,14 +89,12 @@ class SocialMediaPlatformController extends Controller
             $social->update($vars);
             return redirect()->route('listSocialMediaPlatforms');
         }
+        // @todo correct error message here!
         return redirect()->route('dashboard');
     }
 
     public function list(Request $request)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
         return view('SocialMediaPlatform/list', ['social_media_platforms' => $social_media_platforms]);
     }

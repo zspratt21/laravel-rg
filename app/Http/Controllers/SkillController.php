@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Skill;
+use App\Models\SkillLink;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class SkillController extends Controller
@@ -13,27 +13,24 @@ class SkillController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function createForm()
+    public function create()
     {
         return view('Skill/create');
     }
 
-    public function createInstance(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'url' => 'required|string|max:255',
         ]);
         $skill = new Skill();
         $skill->name = $request->get('name');
-        $skill->description = $request->get('description');
         $skill->url = $request->get('url');
         if (!empty($request->file('icon'))) {
             $request->validate([
                 'icon' => 'required|image|max:2048'
             ]);
-            $fileName = time().'_'.$request->file('icon')->getClientOriginalName();
+            $fileName = time() . '_' . $request->file('icon')->getClientOriginalName();
             $filePath = $request->file('icon')->storeAs('uploads/images/skill', $fileName, 'public');
             $skill->icon = '/storage/' . $filePath;
         }
@@ -42,19 +39,13 @@ class SkillController extends Controller
             ->with('success', 'Skill saved.');
     }
 
-    public function edit(Request $request, int $skill_id)
+    public function edit(int $skill_id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'url' => 'required|string|max:255',
-        ]);
         $skill = Skill::query()->find($skill_id);
         if (!empty($skill)) {
             $vars = [
                 'existing_values' => [
                     'name' => $skill->name,
-                    'description' => $skill->description,
                     'url' => $skill->url,
                     'icon' => !empty($skill->icon) ? url($skill->icon) : '',
                 ],
@@ -65,13 +56,15 @@ class SkillController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function updateInstance(Request $request, int $skill_id)
+    public function update(Request $request, int $skill_id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
         $skill = Skill::query()->find($skill_id);
         if (!empty($skill)) {
             $vars = [
                 'name' => $request->get('name'),
-                'description' => $request->get('description'),
                 'url' => $request->get('url'),
             ];
             $icon = $request->file('icon');
@@ -80,7 +73,7 @@ class SkillController extends Controller
                     'icon' => 'required|image|max:2048'
                 ]);
                 $this->removeIcon($skill_id);
-                $fileName = time().'_'.$request->file('icon')->getClientOriginalName();
+                $fileName = time() . '_' . $request->file('icon')->getClientOriginalName();
                 $filePath = $request->file('icon')->storeAs('uploads/images/skill', urlencode($fileName), 'public');
                 $vars['icon'] = '/storage/' . $filePath;
             }
@@ -101,8 +94,8 @@ class SkillController extends Controller
         $skill = Skill::query()->find($skill_id);
         if (!empty($skill)) {
             if (!empty($skill->icon)) {
-                File::delete(public_path().$skill->icon);
-                return response()->json($skill->update(['icon' => null]))->header('Content-Type', 'application/json');
+                File::delete(public_path() . $skill->icon);
+                return response()->json($skill->update(['icon' => null]));
             }
         }
         return response()->json(['error' => 'Skill does not exist'], 404);
@@ -110,6 +103,17 @@ class SkillController extends Controller
 
     public function delete(int $skill_id)
     {
-        return Skill::query()->find($skill_id)->delete();
+        $skill = Skill::query()->find($skill_id);
+        if (!empty($skill)) {
+            $links = SkillLink::query()->where(['skill', '=', $skill_id])->get()->all();
+            foreach ($links as $link) {
+                $link->delete();
+            }
+            if (!empty($skill->icon)) {
+                $this->removeIcon($skill_id);
+            }
+            return $skill->delete();
+        }
+        return response()->json(['error' => 'Skill does not exist'], 404);
     }
 }

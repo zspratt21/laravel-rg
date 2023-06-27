@@ -13,11 +13,8 @@ class SocialMediaLinkController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function createForm()
+    public function create()
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $platforms = SocialMediaPlatform::all(['name', 'id']);
         $platform_options = [];
         foreach ($platforms as $platform) {
@@ -29,18 +26,23 @@ class SocialMediaLinkController extends Controller
         return view('SocialMediaLink/create', $vars);
     }
 
-    public function createInstance(Request $request)
+    public function store(Request $request)
     {
-        dump($request);
-        dump($request->get('url'));
-        dump($request->get('social_media_platform'));
-        dump(Auth::id());
-        $social_link = new SocialMediaLink();
-        $social_link->url = $request->get('url');
-        $social_link->social_media_platform = $request->get('social_media_platform');
-        $social_link->user = Auth::id();
-        $social_link->save();
-        return back()
-            ->with('success', 'Social link saved.');
+        $platform = $request->get('social_media_platform');
+        $link = SocialMediaLink::query()
+            ->where('social_media_platform', '=', $platform)
+            ->where('user', '=', Auth::id())
+            ->first();
+        if (empty($link)) {
+            $social_link = new SocialMediaLink();
+            $social_link->url = $request->get('url');
+            $social_link->social_media_platform = $platform;
+            $social_link->user = Auth::id();
+            $social_link->save();
+            return back()
+                ->with('success', 'Social link saved.');
+        }
+        // @todo error: link already exists for this user!
+        return null;
     }
 }

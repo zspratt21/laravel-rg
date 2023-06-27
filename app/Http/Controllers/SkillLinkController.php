@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\SkillLink;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SkillLinkController extends Controller
@@ -12,7 +11,8 @@ class SkillLinkController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function createLink(int $skill_id) {
+    public function store(int $skill_id)
+    {
         $skill_link = new SkillLink();
         $skill_link->skill = $skill_id;
         $skill_link->user = Auth::id();

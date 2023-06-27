@@ -15,7 +15,7 @@ class ExperienceController extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    public function createForm()
+    public function create()
     {
         $entities = Entity::all(['name', 'id']);
         $entity_options = [];
@@ -32,7 +32,7 @@ class ExperienceController extends Controller
         return view('Experience/create', $vars);
     }
 
-    public function createInstance(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -107,14 +107,11 @@ class ExperienceController extends Controller
     // @todo add in other details from entity to make it look nice
     public function list(Request $request)
     {
-        if (empty(Auth::id())) {
-            return redirect()->route('login');
-        }
         $experiences = Experience::query()->where('user', '=', Auth::id())->get(['id', 'title', 'entity']);
         return view('Experience/list', ['experiences' => $experiences]);
     }
 
-    public function updateInstance(Request $request, int $experience_id)
+    public function update(Request $request, int $experience_id)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -139,15 +136,22 @@ class ExperienceController extends Controller
         return response()->json(['error' => 'Experience does not exist'], 404);
     }
 
-    public function deleteInstance(int $experience_id)
+    public function delete(int $experience_id)
     {
-        $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
-        if (!empty($milestones)) {
-            $controller = new MilestoneController();
-            foreach ($milestones as $milestone) {
-                $controller->deleteInstance($milestone->id);
+        $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
+        if (!empty($experience)) {
+            if ($experience->user == Auth::id()) {
+                $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
+                if (!empty($milestones)) {
+                    $controller = new MilestoneController();
+                    foreach ($milestones as $milestone) {
+                        $controller->deleteInstance($milestone->id);
+                    }
+                }
+                return $experience->delete();
             }
         }
-        return Experience::query()->find($experience_id)->delete();
+        // @todo error page handling for all non ajax requests!
+        return response('That experience either is not yours or it does not exist.', 403);
     }
 }

@@ -8,6 +8,7 @@
     margin:0mm 0mm 0mm 0mm !important;
 
 }
+
 html{
     color: #909294;
     background: #212529;
@@ -15,7 +16,7 @@ html{
 
 body {
     margin: 40px;
-    font-family: "Adobe Caslon Pro", "Minion Pro", serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 12pt;
 }
 
@@ -24,7 +25,6 @@ a{
 }
 
 header {
-    font-family: "Trajan Pro", serif;
     padding: 1px 20px 20px 20px;
     color: white;
 }
@@ -46,7 +46,6 @@ header span.name{
 }
 
 section h2 {
-    font-family: "Trajan Pro", serif;
     font-size: 14pt;
 }
 
@@ -61,24 +60,17 @@ section#statement p {
     margin-bottom: -15px;
 }
 
-section.coverletter {
-    margin-top: 40px;
-}
-
-section.coverletter p {
-    margin-left: 0px;
-}
-
 section ul {
     list-style-type: circle;
 }
 
 .pagebreak {
-    page-break-before: always;
+    /*page-break-before: always;*/
 }
 
 table, tr {
     page-break-before: auto;
+    /*page-break-inside: avoid;*/
 }
 
 table {
@@ -95,4 +87,19 @@ td.no-space{
 
 span.contact-info{
     font-size: 15px;
+}
+
+div.resume-top {
+    margin: -40px -40px 0 -40px;
+    display: block;
+    padding: 20px;
+}
+
+span.contact-info i {
+    padding: 0 3px 0 3px;
+    height: 20px;
+}
+
+span.resume-socials {
+    text-align: right; padding-top: 5px;
 }

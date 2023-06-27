@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon')->nullable();
             $table->string('url')->nullable();
-            $table->text('description');
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class ResumeController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-    public function show()
+    public function prepare()
     {
         $user = Auth::user();
         $profile = ResumeProfile::query()->where('user', '=', $user->id)->first();
@@ -48,20 +48,18 @@ class ResumeController extends Controller
                 }
             }
         }
-        $linked_skills = SkillLink::query()->where('user', '=', $user->id)->get()->all();
+        $linked_skills = SkillLink::query()->where('user', '=', $user->id)->orderBy('created_at')->get()->all();
         foreach ($linked_skills as $linked_skill) {
             $skill = Skill::query()->find($linked_skill->skill);
             if (!empty($skill)) {
-                if (!empty($skill->icon)) {
-                    $vars['skills'][] = [
-                        'name' => $skill->name,
-                        'icon' => url($skill->icon),
-                        'url' => $skill->url,
-                    ];
-                }
+                $vars['skills'][] = [
+                    'name' => $skill->name,
+                    'icon' => !empty($skill->icon) ? url($skill->icon) : '',
+                    'url' => !empty($skill->url) ? $skill->url : '',
+                ];
             }
         }
-        $linked_experiences = Experience::query()->where('user', '=', $user->id)->get()->all();
+        $linked_experiences = Experience::query()->where('user', '=', $user->id)->orderBy('date_started', 'DESC')->get()->all();
         foreach ($linked_experiences as $experience) {
             $entity = Entity::query()->find($experience->entity);
             $milestone_data = [];
@@ -78,24 +76,35 @@ class ResumeController extends Controller
             $experience_data = [
                 'title' => $experience->title,
                 'description' => $experience->description,
-                'date_started' => Carbon::parse($experience->date_started)->format('F Y'),
-                'date_ended' => !empty($experience->date_ended) ? Carbon::parse($experience->date_ended)->format('F Y') : 'Present',
+                'date_started' => Carbon::parse($experience->date_started)->format('M Y'),
+                'date_ended' => !empty($experience->date_ended) ? Carbon::parse($experience->date_ended)->format('M Y') : 'Present',
                 'entity_logo' => url($entity->logo),
                 'entity_name' => $entity->name,
                 'milestones' => $milestone_data,
             ];
             $vars['experiences'][ucfirst($experience->type)][] = $experience_data;
         }
+
+        return $vars;
+    }
+
+    public function show()
+    {
+        $user = Auth::user();
+        $vars = $this->prepare();
         $pdfreactor = new PDFreactor(env('PDFREACTOR_HOST', 'http://localhost'), env('PDFREACTOR_PORT', 9423));
         $config = [
             'document'  => view('Resume/og', $vars)->render(),
-            // @todo remove debugging
-            'debugSettings' => ['all' => true],
         ];
         $result = $pdfreactor->convertAsBinary($config);
         header("Content-Type: application/pdf");
         header('Content-Disposition: inline; filename="' . $user->name . ' - Resume - ' . time() . '.pdf"');
         echo $result;
-        return true;
+    }
+
+    public function debug()
+    {
+        $vars = $this->prepare();
+        return view('Resume/og', $vars);
     }
 }

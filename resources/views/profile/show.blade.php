@@ -3,7 +3,7 @@
         <script type="module">
             $(document).ready(function() {
                 $.ajax({
-                    url: '{{ route('resumeProfileGet') }}',
+                    url: '{{ route('resumeProfileEdit') }}',
                     type: 'GET',
                     success: function(response) {
                         console.log(response);
