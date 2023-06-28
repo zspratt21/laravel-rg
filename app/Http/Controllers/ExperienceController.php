@@ -104,10 +104,17 @@ class ExperienceController extends Controller
         return response()->json(['error' => 'Experience does not exist'], 404);
     }
 
-    // @todo add in other details from entity to make it look nice
-    public function list(Request $request)
+    public function list()
     {
-        $experiences = Experience::query()->where('user', '=', Auth::id())->get(['id', 'title', 'entity']);
+        $experiences = Experience::query()
+            ->where('user', '=', Auth::id())
+            ->get(['id', 'title', 'entity', 'type'])
+            ->toArray();
+        foreach ($experiences as &$experience) {
+            $entity = Entity::query()->find($experience['entity']);
+            $experience['entity'] = $entity->name;
+            $experience['type'] = ucfirst($experience['type']);
+        }
         return view('Experience/list', ['experiences' => $experiences]);
     }
 
@@ -145,13 +152,12 @@ class ExperienceController extends Controller
                 if (!empty($milestones)) {
                     $controller = new MilestoneController();
                     foreach ($milestones as $milestone) {
-                        $controller->deleteInstance($milestone->id);
+                        $controller->delete($milestone->id);
                     }
                 }
                 return $experience->delete();
             }
         }
-        // @todo error page handling for all non ajax requests!
-        return response('That experience either is not yours or it does not exist.', 403);
+        abort(404, 'That experience either is not yours or it does not exist.');
     }
 }

@@ -45,12 +45,13 @@ Route::get('resume/debug', [ResumeController::class, 'debug'])->name('resumeDebu
 /**
  * Entity Callback Routes.
  */
-Route::get('/entities', [EntityController::class, 'list'])->name('listEntities');
+Route::get('/entities', [EntityController::class, 'list'])->name('entityList');
 Route::get('/create/entity', [EntityController::class, 'create'])->name('createEntity');
 Route::post('/create/entity', [EntityController::class, 'store'])->name('entityCreateInstance');
 Route::get('/edit/entity/{entity_id}', [EntityController::class, 'edit'])->name('editEntity');
 Route::post('/edit/entity/{entity_id}', [EntityController::class, 'update'])->name('entityUpdateInstance');
 Route::get('/entity/{entity_id}/remove-logo', [EntityController::class, 'removeLogo'])->name('entityRemoveLogo');
+Route::get('/delete/entity/{entity_id}', [EntityController::class, 'delete'])->name('entityDelete');
 
 /**
  * Skill Callback Routes.
@@ -83,12 +84,14 @@ Route::post('/create/social', [SocialMediaPlatformController::class, 'store'])->
 Route::get('/edit/social/{social_id}', [SocialMediaPlatformController::class, 'edit'])->name('editSocial');
 Route::post('/edit/social/{social_id}/submit', [SocialMediaPlatformController::class, 'update'])->name('socialUpdateInstance');
 Route::get('/social/{social_id}/remove-logo', [SocialMediaPlatformController::class, 'removeLogo'])->name('socialRemoveLogo');
+Route::get('/delete/social/{social_id}', [SocialMediaPlatformController::class, 'delete'])->name('socialDelete');
 
 /**
  * Social Media Link Callback Routes.
  */
 Route::get('/create/social-link', [SocialMediaLinkController::class, 'create'])->name('createSocialLink');
 Route::post('/create/social-link', [SocialMediaLinkController::class, 'store'])->name('socialLinkCreateInstance');
+Route::get('/delete/social-link/{social_id}', [SocialMediaLinkController::class, 'delete'])->name('socialLinkDelete');
 
 /**
  * Milestone Callback Routes.

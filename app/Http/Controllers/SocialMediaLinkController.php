@@ -26,6 +26,23 @@ class SocialMediaLinkController extends Controller
         return view('SocialMediaLink/create', $vars);
     }
 
+    public function delete($social_id)
+    {
+        $link = SocialMediaLink::query()
+            ->where('social_media_platform', '=', $social_id)
+            ->where('user', '=', Auth::id())
+            ->first();
+        if (!empty($link)) {
+            $link->delete();
+            return back();
+        }
+        // @todo correct error message
+        return null;
+    }
+
+    // @todo
+    public function edit() {}
+
     public function store(Request $request)
     {
         $platform = $request->get('social_media_platform');

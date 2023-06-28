@@ -85,7 +85,6 @@
                         <table>
                             <tr>
                                 <td class="no-space" style="vertical-align: top; font-size: 20px;"><span><i>{{ $experience['entity_name'] }}</i></span></td>
-{{--                                <td class="no-space" style="vertical-align: top; font-size: 20px;"><span><i>{{ $experience['entity_name'] }}</i></span></td>--}}
                                 <td class="no-space" style="text-align: right; font-size: 20px; width: 280px">{{ $experience['date_started'] }} - {{ $experience['date_ended'] }}</td>
                             </tr>
                             <tr>
@@ -121,9 +120,7 @@
     <footer class="bg-dark text-white-50 text-center mt-5 p-2" style="display:block; position: absolute !important; bottom: -5px !important; width: 100% !important; margin-left: -35px !important; text-align: center !important;">
         <table>
             <tr>
-                <td style="font-size: 18px !important;"><span style="vertical-align: text-before-edge">&copy; {{ date("Y") }} {{ $name }} - <a class="text-white-50" href="https://github.com" target="_blank">Dynamically Generated HTML CV</a> | Made with</span>
-    {{--            </td>--}}
-    {{--            <td>--}}
+                <td style="font-size: 18px !important;"><span style="vertical-align: text-before-edge">&copy; {{ date("Y") }} {{ $name }} - <a class="text-white-50">Dynamically Generated HTML CV</a> | Made with</span>
                     <a href="https://en.wikipedia.org/wiki/HTML5" style="vertical-align: middle">
                         <img style="padding: 5px 5px 5px 5px;" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" height="30px" width="auto">
                     </a>

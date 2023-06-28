@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entity;
+use App\Models\Experience;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class EntityController extends Controller
@@ -17,6 +17,23 @@ class EntityController extends Controller
     public function create()
     {
         return view('Entity/create');
+    }
+
+    public function delete(int $entity_id)
+    {
+        $entity = Entity::query()->find($entity_id);
+        if (!empty($entity)) {
+            $experiences = Experience::query()->where('entity', '=', $entity_id)->get();
+            $controller = new ExperienceController();
+            foreach ($experiences as $experience) {
+                // @todo consider moving delete functions to models via overwrite for any custom actions/logic
+                $controller->delete($experience->id);
+            }
+            $entity->delete();
+            return redirect()->route('entityList');
+        }
+        // @todo error message
+        return null;
     }
 
     public function edit(int $entity_id)
@@ -35,7 +52,7 @@ class EntityController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function list(Request $request)
+    public function list()
     {
         $entities = Entity::all(['id', 'name', 'logo']);
         return view('Entity/list', ['entities' => $entities]);
@@ -92,9 +109,8 @@ class EntityController extends Controller
                 $vars['logo'] = '/storage/' . $filePath;
             }
             $entity->update($vars);
-            return redirect()->route('listEntities');
+            return redirect()->route('entityList');
         }
-        // @todo appropriate error page with 'the specified entity does not exist'
-        return redirect()->route('dashboard');
+        abort(404, 'The specified entity does not exist.');
     }
 }

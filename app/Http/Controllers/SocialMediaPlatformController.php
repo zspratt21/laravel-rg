@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SocialMediaLink;
 use App\Models\SocialMediaPlatform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,28 +19,20 @@ class SocialMediaPlatformController extends Controller
         return view('SocialMediaPlatform/create');
     }
 
-    public function store(Request $request)
+    public function delete(int $social_id)
     {
-        $request->validate([
-            'logo' => 'required|image|max:2048'
-        ]);
-        dump($request);
-        dump($request->file('logo'));
-        dump($request->get('name'));
-        $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
-        dump(urlencode($fileName));
-        $filePath = $request->file('logo')
-            ->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
-        $social_media_platform = new SocialMediaPlatform();
-        $social_media_platform->name = $request->get('name');
-        $social_media_platform->logo = '/storage/' . $filePath;
-        $social_media_platform->save();
-        return back()
-            ->with('success', 'Social saved.')
-            ->with('icon', urlencode($fileName));
+        $social_media_platform = SocialMediaPlatform::query()->find($social_id);
+        if (!empty($social_media_platform)) {
+            SocialMediaPlatform::query()->where('social_media_platform', '=', $social_id)->delete();
+            $this->removeLogo($social_id);
+            $social_media_platform->delete();
+            return redirect()->route('listSocialMediaPlatforms');
+        }
+        // @todo correct error message.
+        return null;
     }
 
-    public function edit(Request $request, int $social_id)
+    public function edit(int $social_id)
     {
         $social_media_platform = SocialMediaPlatform::query()
             ->where('id', '=', $social_id)
@@ -55,6 +48,23 @@ class SocialMediaPlatformController extends Controller
             'social_id' => $social_id,
         ];
         return view('SocialMediaPlatform/edit', $vars);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'logo' => 'required|image|max:2048',
+        ]);
+        $fileName = time() . '_' . $request->file('logo')->getClientOriginalName();
+        $filePath = $request->file('logo')
+            ->storeAs('uploads/images/social-media-platform', urlencode($fileName), 'public');
+        $social_media_platform = new SocialMediaPlatform();
+        $social_media_platform->name = $request->get('name');
+        $social_media_platform->logo = '/storage/' . $filePath;
+        $social_media_platform->save();
+        return back()
+            ->with('success', 'Social Media Platform saved.');
     }
 
     public function removeLogo(int $social_id)
@@ -93,9 +103,14 @@ class SocialMediaPlatformController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function list(Request $request)
+    public function list()
     {
         $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
-        return view('SocialMediaPlatform/list', ['social_media_platforms' => $social_media_platforms]);
+        $user_links = SocialMediaLink::query()->select(['id'])->where('user', '=', Auth::id())->pluck('id')->toArray();
+        $vars = [
+            'social_media_platforms' => $social_media_platforms,
+            'user_links' => $user_links,
+        ];
+        return view('SocialMediaPlatform/list', $vars);
     }
 }

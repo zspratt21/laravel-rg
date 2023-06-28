@@ -41,7 +41,7 @@
                                 <x-dropdown-link href="{{route('listSkills')}}">
                                     {{ __('Skills') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{route('listEntities')}}">
+                                <x-dropdown-link href="{{route('entityList')}}">
                                     {{ __('Entities') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{route('listSocialMediaPlatforms')}}">
