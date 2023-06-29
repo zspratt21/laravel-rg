@@ -3,7 +3,7 @@
     {{ __('Create New Entity') }}
 @endsection
 @section('content')
-    <form action="{{route('entityCreateInstance')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('entityStore')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="name">Name</x-label>

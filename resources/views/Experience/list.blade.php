@@ -28,8 +28,8 @@
                         <td class="px-4 py-2">{{$experience['entity']}}</td>
                         <td class="px-4 py-2">{{$experience['type']}}</td>
                         <td class="px-6 py-4 text-right">
-                            <a href="{{route('editExperience', $experience['id'])}}" class="hover:underline">Edit</a>
-                            <a href="{{route('deleteExperience', $experience['id'])}}" class="hover:underline">Delete</a>
+                            <a href="{{route('experienceEdit', $experience['id'])}}" class="hover:underline">Edit</a>
+                            <a href="{{route('experienceDelete', $experience['id'])}}" class="hover:underline">Delete</a>
                         </td>
                     </tr>
                 @endforeach

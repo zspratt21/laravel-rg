@@ -12,7 +12,7 @@
             $('#remove_photo').on('click',function(e) {
                 // Remove photo from model
                 $.ajax({
-                    url: '{{ route('socialRemoveLogo', $social_id) }}',
+                    url: '{{ route('socialPlatformRemoveLogo', $social_id) }}',
                     type: 'GET',
                     success: function(response) {
                         $('#photo_preview').attr('src', '');
@@ -33,7 +33,7 @@
     {{ __('Edit Social Media Platform: ' . $existing_values['name']) }}
 @endsection
 @section('content')
-    <form action="{{route('socialUpdateInstance', $social_id)}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('socialPlatformUpdate', $social_id)}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="name">Name</x-label>

@@ -2,12 +2,12 @@
     <div class="flex">
         <b>Edit Milestone: {{$existing_values['title']}}</b>
         <div class="flex items-end justify-end grow">
-            <x-button class="flex items-end justify-end mt-2 milestone-delete" action="{{route('milestoneDeleteInstance', $milestone_id)}}">
+            <x-button class="flex items-end justify-end mt-2 milestone-delete" action="{{route('milestoneDelete', $milestone_id)}}">
                 {{ __('Delete') }}
             </x-button>
         </div>
     </div>
-    <form action="{{route('milestoneUpdateInstance', $milestone_id)}}" method="post" enctype="multipart/form-data" class="milestone-edit milestone-form">
+    <form action="{{route('milestoneUpdate', $milestone_id)}}" method="post" enctype="multipart/form-data" class="milestone-edit milestone-form">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="title">Title</x-label>

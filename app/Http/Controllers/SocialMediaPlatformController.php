@@ -26,27 +26,25 @@ class SocialMediaPlatformController extends Controller
             SocialMediaPlatform::query()->where('social_media_platform', '=', $social_id)->delete();
             $this->removeLogo($social_id);
             $social_media_platform->delete();
-            return redirect()->route('listSocialMediaPlatforms');
+            return redirect()->route('socialPlatformList');
         }
         abort(404, "That platform doesn't exist.");
     }
 
     public function edit(int $social_id)
     {
-        $social_media_platform = SocialMediaPlatform::query()
-            ->where('id', '=', $social_id)
-            ->first();
-        if (empty($social_media_platform)) {
-            return redirect()->route('dashboard');
+        $social_media_platform = SocialMediaPlatform::query()->find($social_id);
+        if (!empty($social_media_platform)) {
+            $vars = [
+                'existing_values' => [
+                    'name' => $social_media_platform->name,
+                    'logo' => !empty($social_media_platform->logo) ? url($social_media_platform->logo) : '',
+                ],
+                'social_id' => $social_id,
+            ];
+            return view('SocialMediaPlatform/edit', $vars);
         }
-        $vars = [
-            'existing_values' => [
-                'name' => $social_media_platform->name,
-                'logo' => !empty($social_media_platform->logo) ? url($social_media_platform->logo) : '',
-            ],
-            'social_id' => $social_id,
-        ];
-        return view('SocialMediaPlatform/edit', $vars);
+        abort(404, "That platform doesn't exist");
     }
 
     public function store(Request $request)
@@ -95,7 +93,7 @@ class SocialMediaPlatformController extends Controller
                 $vars['logo'] = '/storage/' . $filePath;
             }
             $social->update($vars);
-            return redirect()->route('listSocialMediaPlatforms');
+            return redirect()->route('socialPlatformList');
         }
         abort(404, "That platform doesn't exist.");
     }

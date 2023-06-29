@@ -101,5 +101,22 @@ span.contact-info i {
 }
 
 span.resume-socials {
-    text-align: right; padding-top: 5px;
+    text-align: right;
+    padding-top: 5px;
+}
+
+h2.resume-section-heading {
+    text-align: center;
+    font-size: 30px
+}
+
+div.resume-section-container {
+    background: #393C3F;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0px -20px 0 -20px;
+}
+
+div.resume-skill-container {
+    display: flex;background: #434649; border-radius: 15px; padding: 3px 5px 0 7px; vertical-align: middle;
 }

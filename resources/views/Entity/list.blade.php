@@ -32,7 +32,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="{{route('editEntity', $entity->id)}}" class="hover:underline">Edit</a>
+                            <a href="{{route('entityEdit', $entity->id)}}" class="hover:underline">Edit</a>
                             <a href="{{route('entityDelete', $entity->id)}}" class="hover:underline">Delete</a>
                         </td>
                     </tr>

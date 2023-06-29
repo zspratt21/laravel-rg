@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 {{--  @todo consider adding to profile via dynamic ajax  --}}
-    <form action="{{route('socialLinkCreateInstance')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('socialLinkUpdate')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="title">Url</x-label>

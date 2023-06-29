@@ -33,7 +33,7 @@
     {{ __('Edit Entity: ' . $existing_values['name']) }}
 @endsection
 @section('content')
-    <form action="{{route('entityUpdateInstance', $entity_id)}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('entityUpdate', $entity_id)}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="name">Name</x-label>

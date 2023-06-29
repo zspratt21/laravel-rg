@@ -49,13 +49,13 @@
         </div>
     </div>
     <section id="skills">
-        <h2 style="text-align: center; font-size: 30px">Skills</h2>
+        <h2 class="resume-section-heading">Skills</h2>
         <section>
-            <div style="background: #393C3F; border-radius: 15px; padding: 20px; margin: 0px -20px 0 -20px;">
+            <div class="resume-section-container">
                 <div style="display: flex; flex-wrap: wrap;">
                     @foreach($skills as $skill)
                         <a @if(!empty($skill['url'])) href="{{ $skill['url'] }}" @endif style="margin: 5px">
-                            <div style="display: flex;background: #434649; border-radius: 15px; padding: 3px 5px 0 7px; vertical-align: middle;">
+                            <div class="resume-skill-container">
                                 <b style="vertical-align: middle; line-height: 2;">{{ $skill['name'] }}</b>
                                 @if(!empty($skill['icon']))
                                     <div style="display: inline-block">
@@ -71,9 +71,9 @@
     </section>
     <section id="employment">
         @foreach($experiences as $type => $experience_type)
-        <h2 style="text-align: center; font-size: 30px">{{ $type }}</h2>
+        <h2 class="resume-section-heading">{{ $type }}</h2>
         <section>
-            <div style="background: #393C3F; border-radius: 15px; padding: 20px; padding-bottom: 0; margin: 0px -20px 0 -20px; overflow: visible">
+            <div class="resume-section-container" style="padding-bottom: 0; overflow: visible">
                 @foreach($experience_type as $experience)
                     <div style="padding: 20px 20px 0;margin: 0px -20px 0 -20px; overflow: visible">
                         <table>

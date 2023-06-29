@@ -79,7 +79,7 @@ class SkillController extends Controller
                 $vars['icon'] = '/storage/' . $filePath;
             }
             $skill->update($vars);
-            return redirect()->route('listSkills');
+            return redirect()->route('skillList');
         }
         abort('404', "That skill doesn't exist.");
     }

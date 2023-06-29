@@ -3,7 +3,7 @@
     {{ __('Create New Experience') }}
 @endsection
 @section('content')
-    <form action="{{route('experienceCreateInstance')}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('experienceStore')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="title">Title</x-label>

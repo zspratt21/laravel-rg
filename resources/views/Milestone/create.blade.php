@@ -7,7 +7,7 @@
             </x-button>
         </div>
     </div>
-    <form action="{{route('milestoneCreateInstance', $experience_id)}}" method="post" enctype="multipart/form-data" class="milestone-create milestone-form">
+    <form action="{{route('milestoneStore', $experience_id)}}" method="post" enctype="multipart/form-data" class="milestone-create milestone-form">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="title">Title</x-label>

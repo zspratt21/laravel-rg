@@ -32,11 +32,11 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <a href="{{route('editSocial', $social_media_platform->id)}}" class="hover:underline">Edit</a>
+                                <a href="{{route('socialPlatformEdit', $social_media_platform->id)}}" class="hover:underline">Edit</a>
                                 @if(in_array($social_media_platform->id, $user_links))
                                     <a href="{{route('socialLinkDelete', $social_media_platform->id)}}" class="hover:underline">Unlink</a>
                                 @endif
-                                <a href="{{route('socialDelete', $social_media_platform->id)}}" class="hover:underline">Delete</a>
+                                <a href="{{route('socialPlatformDelete', $social_media_platform->id)}}" class="hover:underline">Delete</a>
                             </td>
                         </tr>
                     @endforeach

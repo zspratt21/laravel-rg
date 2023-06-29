@@ -95,7 +95,7 @@
                     success: function(response) {
                         console.log(response);
                         if (formInstance.hasClass('milestone-create')){
-                            let milestone_edit_route = "{{ route('editMilestone', 'milestone_id') }}";
+                            let milestone_edit_route = "{{ route('milestoneEdit', 'milestone_id') }}";
                             $.ajax({
                                 url: milestone_edit_route.replace('milestone_id', response.milestone.id),
                                 type: 'GET',
@@ -122,7 +122,7 @@
             });
             $('#add-milestone').on('click',function(e) {
                 $.ajax({
-                    url: '{{ route('createMilestone', ['experience_id' => $experience_id]) }}',
+                    url: '{{ route('milestoneCreate', ['experience_id' => $experience_id]) }}',
                     type: 'GET',
                     contentType: false,
                     processData: false,
@@ -149,7 +149,7 @@
     {{ __('Edit Experience: '.$existing_values['title']) }}
 @endsection
 @section('content')
-    <form action="{{route('experienceUpdateInstance', ['experience_id' => $experience_id])}}" method="post" enctype="multipart/form-data" id="experienceUpdate">
+    <form action="{{route('experienceUpdate', ['experience_id' => $experience_id])}}" method="post" enctype="multipart/form-data" id="experienceUpdate">
         @csrf
         <div class="mt-4">
             <x-label class="custom-file-label" for="title">Title</x-label>

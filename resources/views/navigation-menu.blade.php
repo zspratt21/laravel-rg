@@ -19,17 +19,20 @@
                         <x-dropdown align="left" width="60">
                             <x-slot name="trigger">Create</x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link href="{{ route('createEntity') }}">
+                                <x-dropdown-link href="{{ route('entityCreate') }}">
                                     {{ __('Entity') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('skillCreate') }}">
                                     {{ __('Skill') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('createExperience') }}">
+                                <x-dropdown-link href="{{ route('experienceCreate') }}">
                                     {{ __('Experience') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{ route('createSocial') }}">
+                                <x-dropdown-link href="{{ route('socialPlatformCreate') }}">
                                     {{ __('Social Media Platform') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link href="{{ route('socialLinkCreate') }}">
+                                    {{ __('Social Media Link') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
@@ -38,16 +41,16 @@
                         <x-dropdown align="left" width="60">
                             <x-slot name="trigger">View</x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link href="{{route('listSkills')}}">
+                                <x-dropdown-link href="{{route('skillList')}}">
                                     {{ __('Skills') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{route('entityList')}}">
                                     {{ __('Entities') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{route('listSocialMediaPlatforms')}}">
+                                <x-dropdown-link href="{{route('socialPlatformList')}}">
                                     {{ __('Social Media Platforms') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="{{route('listExperiences')}}">
+                                <x-dropdown-link href="{{route('experienceList')}}">
                                     {{ __('Experiences') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link href="{{ route('resumePrint') }}">
