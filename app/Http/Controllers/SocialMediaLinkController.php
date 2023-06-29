@@ -36,12 +36,8 @@ class SocialMediaLinkController extends Controller
             $link->delete();
             return back();
         }
-        // @todo correct error message
-        return null;
+        abort(404, 'Either that link does not exist or is not associated with your account');
     }
-
-    // @todo
-    public function edit() {}
 
     public function store(Request $request)
     {
@@ -59,7 +55,6 @@ class SocialMediaLinkController extends Controller
             return back()
                 ->with('success', 'Social link saved.');
         }
-        // @todo error: link already exists for this user!
-        return null;
+        abort(500, 'Link already exists for this user.');
     }
 }

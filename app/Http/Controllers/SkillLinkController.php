@@ -13,9 +13,25 @@ class SkillLinkController extends Controller
     }
     public function store(int $skill_id)
     {
-        $skill_link = new SkillLink();
-        $skill_link->skill = $skill_id;
-        $skill_link->user = Auth::id();
-        $skill_link->save();
+        $link = SkillLink::query()->where('skill', '=', $skill_id)->where('user', '=', Auth::id());
+        if ($link->exists()) {
+            abort(500, 'This skill is already linked to your account');
+        } else {
+            $skill_link = new SkillLink();
+            $skill_link->skill = $skill_id;
+            $skill_link->user = Auth::id();
+            $skill_link->save();
+        }
+    }
+
+    public function delete(int $skill_id)
+    {
+        $link = SkillLink::query()->where('skill', '=', $skill_id)->where('user', '=', Auth::id());
+        if ($link->exists()) {
+            $link->delete();
+            return back(200);
+        } else {
+            abort(404, "Either that skill link does not exist or isn't associated with your account");
+        }
     }
 }

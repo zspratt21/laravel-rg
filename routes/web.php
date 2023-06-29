@@ -64,6 +64,7 @@ Route::post('/edit/skill/{skill_id}', [SkillController::class, 'update'])->name(
 Route::get('/skill/{skill_id}/remove-logo', [SkillController::class, 'removeIcon'])->name('skillRemoveIcon');
 Route::get('/delete/skill/{skill_id}', [SkillController::class, 'delete'])->name('skillDelete');
 Route::get('/skill-link/{skill_id}', [SkillLinkController::class, 'store'])->name('skillCreateLink');
+Route::get('/delete/skill-link/{skill_id}', [SkillLinkController::class, 'delete'])->name('skillUnlink');
 
 /**
  * Experience Callback Routes.

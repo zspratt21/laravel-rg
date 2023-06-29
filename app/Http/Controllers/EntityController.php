@@ -26,14 +26,12 @@ class EntityController extends Controller
             $experiences = Experience::query()->where('entity', '=', $entity_id)->get();
             $controller = new ExperienceController();
             foreach ($experiences as $experience) {
-                // @todo consider moving delete functions to models via overwrite for any custom actions/logic
                 $controller->delete($experience->id);
             }
             $entity->delete();
             return redirect()->route('entityList');
         }
-        // @todo error message
-        return null;
+        abort(404, "That entity doesn't exist");
     }
 
     public function edit(int $entity_id)
@@ -67,8 +65,7 @@ class EntityController extends Controller
                 return response()->json($entity->update(['logo' => null]))->header('Content-Type', 'application/json');
             }
         }
-        // @todo appropriate error page with 'Either the specified entity does not exist or does not have a logo associated with it'
-        return null;
+        abort(404, 'Either the specified entity does not exist or does not have a logo associated with it');
     }
 
     public function store(Request $request)

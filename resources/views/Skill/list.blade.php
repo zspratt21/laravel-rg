@@ -33,8 +33,11 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <a href="{{route('skillUpdate', $skill->id)}}" class="hover:underline">Edit</a>
-                                    {{-- @todo creat condition to either link or unlink if user has this skill or not already --}}
-                                    <a href="{{route('skillCreateLink', $skill->id)}}" class="hover:underline">Link</a>
+                                    @if(in_array($skill->id, $user_links))
+                                        <a href="{{route('skillUnlink', $skill->id)}}" class="hover:underline">Unlink</a>
+                                    @else
+                                        <a href="{{route('skillCreateLink', $skill->id)}}" class="hover:underline">Link</a>
+                                    @endif
                                     <a href="{{route('skillDelete', $skill->id)}}" class="hover:underline">Delete</a>
                                 </td>
                             </tr>

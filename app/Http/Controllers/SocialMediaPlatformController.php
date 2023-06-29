@@ -28,8 +28,7 @@ class SocialMediaPlatformController extends Controller
             $social_media_platform->delete();
             return redirect()->route('listSocialMediaPlatforms');
         }
-        // @todo correct error message.
-        return null;
+        abort(404, "That platform doesn't exist.");
     }
 
     public function edit(int $social_id)
@@ -76,8 +75,7 @@ class SocialMediaPlatformController extends Controller
                 return response()->json($social_media_platform->update(['logo' => null]));
             }
         }
-        // @todo correct error message here!
-        return null;
+        abort(404, "That platform doesn't exist.");
     }
 
     public function update(Request $request, int $social_id)
@@ -99,14 +97,13 @@ class SocialMediaPlatformController extends Controller
             $social->update($vars);
             return redirect()->route('listSocialMediaPlatforms');
         }
-        // @todo correct error message here!
-        return redirect()->route('dashboard');
+        abort(404, "That platform doesn't exist.");
     }
 
     public function list()
     {
         $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
-        $user_links = SocialMediaLink::query()->select(['id'])->where('user', '=', Auth::id())->pluck('id')->toArray();
+        $user_links = SocialMediaLink::query()->where('user', '=', Auth::id())->pluck('id')->toArray();
         $vars = [
             'social_media_platforms' => $social_media_platforms,
             'user_links' => $user_links,

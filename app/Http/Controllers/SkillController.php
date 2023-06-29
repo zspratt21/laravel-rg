@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Skill;
 use App\Models\SkillLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class SkillController extends Controller
@@ -53,7 +54,7 @@ class SkillController extends Controller
             ];
             return view('Skill/edit', $vars);
         }
-        return redirect()->route('dashboard');
+        abort('404', "That skill doesn't exist.");
     }
 
     public function update(Request $request, int $skill_id)
@@ -80,13 +81,18 @@ class SkillController extends Controller
             $skill->update($vars);
             return redirect()->route('listSkills');
         }
-        return response()->json(['error' => 'Skill does not exist'], 404);
+        abort('404', "That skill doesn't exist.");
     }
 
     public function list()
     {
         $skills = Skill::all(['id', 'name', 'icon']);
-        return view('Skill/list', ['skills' => $skills]);
+        $user_links = SkillLink::query()->where('user', '=', Auth::id())->pluck('skill')->toArray();
+        $vars = [
+            'skills' => $skills,
+            'user_links' => $user_links,
+        ];
+        return view('Skill/list', $vars);
     }
 
     public function removeIcon(int $skill_id)
@@ -98,7 +104,7 @@ class SkillController extends Controller
                 return response()->json($skill->update(['icon' => null]));
             }
         }
-        return response()->json(['error' => 'Skill does not exist'], 404);
+        abort('404', "That skill doesn't exist or does not have an icon associated with it.");
     }
 
     public function delete(int $skill_id)
@@ -114,6 +120,6 @@ class SkillController extends Controller
             }
             return $skill->delete();
         }
-        return response()->json(['error' => 'Skill does not exist'], 404);
+        abort('404', "That skill doesn't exist.");
     }
 }
