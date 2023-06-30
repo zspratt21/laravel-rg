@@ -14,8 +14,27 @@ git clone https://github.com/zspratt21/laravel-rg
 #### Or
 Your preferred method for setting up a new git based project (E.G "get from version control" In your IDE of choice)
 
-### Create some entities
+### Install composer dependencies
+```
+composer install
+```
+### Install npm dependencies
+```
+npm install
+```
+### Run migrations
+```
+php artisan migrate
+```
+### Build assets
+```
+npm run build
+```
+### Create entities
 Navigate to Create -> Entity to create some entities (E.G school or company), which you will then refer to when creating your experiences
 
-###
+### Create experiences
 
+### Create skills & links
+
+### Create social media platforms & links
