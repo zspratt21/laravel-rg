@@ -17,10 +17,7 @@ class MilestoneController extends Controller
 
     public function checkExperience(int $experience_id)
     {
-        return Experience::query()
-            ->where('user', '=', Auth::id())
-            ->where('id', '=', $experience_id)
-            ->exists();
+        return Auth::user()->experiences()->find($experience_id)->exists();
     }
     public function create(int $experience_id)
     {
@@ -40,7 +37,7 @@ class MilestoneController extends Controller
     {
         $milestone = Milestone::query()->find($milestone_id);
         if (!empty($milestone)) {
-            if ($this->checkExperience($milestone->experience)) {
+            if ($this->checkExperience($milestone->experience_id)) {
                 $vars = [
                     'milestone_id' => $milestone_id,
                     'existing_values' => [
@@ -67,7 +64,7 @@ class MilestoneController extends Controller
         $milestone = new Milestone();
         $milestone->title = $request->get('title');
         $milestone->description = $request->get('description');
-        $milestone->experience = $experience_id;
+        $milestone->experience_id = $experience_id;
         if (!empty($request->file('image'))) {
             $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
             $filePath = $request->file('image')

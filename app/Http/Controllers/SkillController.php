@@ -87,7 +87,7 @@ class SkillController extends Controller
     public function list()
     {
         $skills = Skill::all(['id', 'name', 'icon']);
-        $user_links = SkillLink::query()->where('user', '=', Auth::id())->pluck('skill')->toArray();
+        $user_links = Auth::user()->skillLinks()->pluck('skill_id')->toArray();
         $vars = [
             'skills' => $skills,
             'user_links' => $user_links,
@@ -111,10 +111,7 @@ class SkillController extends Controller
     {
         $skill = Skill::query()->find($skill_id);
         if (!empty($skill)) {
-            $links = SkillLink::query()->where(['skill', '=', $skill_id])->get()->all();
-            foreach ($links as $link) {
-                $link->delete();
-            }
+            $skill->skillLinks()->delete();
             if (!empty($skill->icon)) {
                 $this->removeIcon($skill_id);
             }

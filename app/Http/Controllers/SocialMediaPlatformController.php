@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SocialMediaLink;
 use App\Models\SocialMediaPlatform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,8 +22,10 @@ class SocialMediaPlatformController extends Controller
     {
         $social_media_platform = SocialMediaPlatform::query()->find($social_id);
         if (!empty($social_media_platform)) {
-            SocialMediaPlatform::query()->where('social_media_platform', '=', $social_id)->delete();
-            $this->removeLogo($social_id);
+            $social_media_platform->socialLinks()->delete();
+            if (!empty($social_media_platform->logo)) {
+                $this->removeLogo($social_id);
+            }
             $social_media_platform->delete();
             return redirect()->route('socialPlatformList');
         }
@@ -101,7 +102,7 @@ class SocialMediaPlatformController extends Controller
     public function list()
     {
         $social_media_platforms = SocialMediaPlatform::all(['id', 'name', 'logo']);
-        $user_links = SocialMediaLink::query()->where('user', '=', Auth::id())->pluck('id')->toArray();
+        $user_links = Auth::user()->socialLinks()->pluck('id')->toArray();
         $vars = [
             'social_media_platforms' => $social_media_platforms,
             'user_links' => $user_links,

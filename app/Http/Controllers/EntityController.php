@@ -23,7 +23,7 @@ class EntityController extends Controller
     {
         $entity = Entity::query()->find($entity_id);
         if (!empty($entity)) {
-            $experiences = Experience::query()->where('entity', '=', $entity_id)->get();
+            $experiences = Experience::query()->where('entity_id', '=', $entity_id)->get();
             $controller = new ExperienceController();
             foreach ($experiences as $experience) {
                 $controller->delete($experience->id);

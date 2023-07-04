@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->text('description');
-            $table->integer('experience');
+            $table->integer('experience_id');
             $table->timestamps();
         });
     }

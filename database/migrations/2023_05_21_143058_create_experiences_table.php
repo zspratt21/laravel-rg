@@ -17,9 +17,9 @@ return new class extends Migration
             $table->text('description');
             $table->date('date_started');
             $table->date('date_ended')->nullable();
-            $table->integer('entity');
+            $table->integer('entity_id');
             $table->string('type');
-            $table->integer('user');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

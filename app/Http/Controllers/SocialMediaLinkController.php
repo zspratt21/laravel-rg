@@ -28,10 +28,7 @@ class SocialMediaLinkController extends Controller
 
     public function delete($social_id)
     {
-        $link = SocialMediaLink::query()
-            ->where('social_media_platform', '=', $social_id)
-            ->where('user', '=', Auth::id())
-            ->first();
+        $link = Auth::user()->socialLinks()->where('social_media_platform_id', '=', $social_id);
         if (!empty($link)) {
             $link->delete();
             return back();
@@ -42,15 +39,12 @@ class SocialMediaLinkController extends Controller
     public function store(Request $request)
     {
         $platform = $request->get('social_media_platform');
-        $link = SocialMediaLink::query()
-            ->where('social_media_platform', '=', $platform)
-            ->where('user', '=', Auth::id())
-            ->first();
-        if (empty($link)) {
+        $link = Auth::user()->socialLinks()->where('social_media_platform_id', '=', $platform);
+        if (!$link->exists()) {
             $social_link = new SocialMediaLink();
             $social_link->url = $request->get('url');
-            $social_link->social_media_platform = $platform;
-            $social_link->user = Auth::id();
+            $social_link->social_media_platform_id = $platform;
+            $social_link->user_id = Auth::id();
             $social_link->save();
             return back()
                 ->with('success', 'Social link saved.');

@@ -25,8 +25,8 @@
                 @foreach($experiences as $experience)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$experience['title']}}</th>
-                        <td class="px-4 py-2">{{$experience['entity']}}</td>
-                        <td class="px-4 py-2">{{$experience['type']}}</td>
+                        <td class="px-4 py-2">{{$experience['entity']['name']}}</td>
+                        <td class="px-4 py-2">{{ucfirst($experience['type'])}}</td>
                         <td class="px-6 py-4 text-right">
                             <a href="{{route('experienceEdit', $experience['id'])}}" class="hover:underline">Edit</a>
                             <a href="{{route('experienceDelete', $experience['id'])}}" class="hover:underline">Delete</a>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Milestone extends Model
 {
@@ -13,6 +14,11 @@ class Milestone extends Model
         'title',
         'image',
         'description',
-        'experience',
+        'experience_id',
     ];
+
+    public function experience(): BelongsTo
+    {
+        return $this->belongsTo(Experience::class);
+    }
 }

@@ -121,7 +121,7 @@
         <table>
             <tr>
                 <td style="font-size: 18px !important;"><span style="vertical-align: text-before-edge">&copy; {{ date("Y") }} {{ $name }} - <a class="text-white-50">Dynamically Generated HTML CV</a> | Made with</span>
-                    <a href="https://en.wikipedia.org/wiki/HTML5" style="vertical-align: middle">
+                    <a href="https://en.wikipedia.org/wiki/HTML" style="vertical-align: middle">
                         <img style="padding: 5px 5px 5px 5px;" src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" height="30px" width="auto">
                     </a>
                     <a href="https://en.wikipedia.org/wiki/CSS" style="vertical-align: middle">

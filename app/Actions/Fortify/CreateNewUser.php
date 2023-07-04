@@ -35,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
         ]);
 
         $resume_profile = new ResumeProfile();
-        $resume_profile->user = $user->id;
+        $resume_profile->user_id = $user->id;
         $resume_profile->save();
 
         return $user;

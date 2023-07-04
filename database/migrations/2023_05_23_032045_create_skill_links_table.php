@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('skill_links', function (Blueprint $table) {
             $table->id();
-            $table->integer('skill');
-            $table->integer('user');
+            $table->integer('skill_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

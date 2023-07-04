@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('social_media_links', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->integer('social_media_platform');
-            $table->integer('user');
+            $table->integer('social_media_platform_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

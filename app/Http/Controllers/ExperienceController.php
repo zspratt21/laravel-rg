@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Entity;
 use App\Models\Experience;
-use App\Models\Milestone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,9 +46,9 @@ class ExperienceController extends Controller
         $experience->description = $request->get('description');
         $experience->date_started = $request->get('date_started');
         $experience->date_ended = $request->get('date_ended');
-        $experience->entity = $request->get('entity');
+        $experience->entity_id = $request->get('entity');
         $experience->type = $request->get('type');
-        $experience->user = Auth::id();
+        $experience->user_id = Auth::id();
         $experience->save();
         return back()
             ->with('success', 'Experience saved.');
@@ -57,17 +56,14 @@ class ExperienceController extends Controller
 
     public function edit(int $experience_id)
     {
-        $experience = Experience::query()
-            ->where('id', '=', $experience_id)
-            ->where('user', '=', Auth::id())
-            ->first();
-        if (!empty($experience)) {
+        $experience = Auth::user()->experiences()->find($experience_id);
+        if ($experience->exists()) {
             $entities = Entity::all(['name', 'id']);
             $entity_options = [];
             foreach ($entities as $entity) {
                 $entity_options[$entity->id] = $entity->name;
             }
-            $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
+            $milestones = $experience->milestones()->get();
             $milestone_edit_forms = [];
             if (!empty($milestones)) {
                 foreach ($milestones as $milestone) {
@@ -93,7 +89,7 @@ class ExperienceController extends Controller
                     'description' => $experience->description,
                     'date_started' => $experience->date_started,
                     'date_ended' => $experience->date_ended,
-                    'entity' => $experience->entity,
+                    'entity' => $experience->entity_id,
                     'type' => $experience->type,
                 ],
                 'experience_id' => $experience_id,
@@ -106,15 +102,11 @@ class ExperienceController extends Controller
 
     public function list()
     {
-        $experiences = Experience::query()
-            ->where('user', '=', Auth::id())
-            ->get(['id', 'title', 'entity', 'type'])
+        $experiences = Experience::with(['entity' => function ($query) {
+            $query->select('name', 'id');
+        }])->where('user_id', '=', Auth::id())
+            ->get(['id', 'title', 'type', 'entity_id'])
             ->toArray();
-        foreach ($experiences as &$experience) {
-            $entity = Entity::query()->find($experience['entity']);
-            $experience['entity'] = $entity->name;
-            $experience['type'] = ucfirst($experience['type']);
-        }
         return view('Experience/list', ['experiences' => $experiences]);
     }
 
@@ -128,14 +120,14 @@ class ExperienceController extends Controller
             'entity' => 'required|int',
             'type' => 'required|string|max:255',
         ]);
-        $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
-        if (!empty($experience)) {
+        $experience = Auth::user()->experiences()->find($experience_id);
+        if ($experience->exists()) {
             $vars = [
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
                 'date_started' => $request->get('date_started'),
                 'date_ended' => $request->get('date_ended'),
-                'entity' => $request->get('entity'),
+                'entity_id' => $request->get('entity'),
                 'type' => $request->get('type'),
             ];
             return $experience->update($vars);
@@ -145,18 +137,16 @@ class ExperienceController extends Controller
 
     public function delete(int $experience_id)
     {
-        $experience = Experience::query()->where('user', '=', Auth::id())->where('id', '=', $experience_id)->first();
-        if (!empty($experience)) {
-            if ($experience->user == Auth::id()) {
-                $milestones = Milestone::query()->where('experience', '=', $experience_id)->get();
-                if (!empty($milestones)) {
-                    $controller = new MilestoneController();
-                    foreach ($milestones as $milestone) {
-                        $controller->delete($milestone->id);
-                    }
+        $experience = Auth::user()->experiences()->find($experience_id);
+        if ($experience->exists()) {
+            $milestones = $experience->milestones()->get();
+            if (!empty($milestones)) {
+                $controller = new MilestoneController();
+                foreach ($milestones as $milestone) {
+                    $controller->delete($milestone->id);
                 }
-                return $experience->delete();
             }
+            return $experience->delete();
         }
         abort(404, 'That experience either is not yours or it does not exist.');
     }

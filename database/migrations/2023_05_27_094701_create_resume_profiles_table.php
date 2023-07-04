@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('mobile')->nullable();
             $table->string('cover_photo')->nullable();
             $table->text('introduction')->nullable();
-            $table->integer('user');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
