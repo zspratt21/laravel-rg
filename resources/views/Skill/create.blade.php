@@ -14,10 +14,6 @@
             <x-input type="text" name="url" class="block mt-1 w-full" id="url"/>
         </div>
         <div class="mt-4">
-            <x-label class="custom-file-label" for="description">Description</x-label>
-            <x-textarea type="textarea" name="description" class="block mt-1 w-full" id="description"></x-textarea>
-        </div>
-        <div class="mt-4">
             <x-label class="custom-file-label" for="icon">Icon</x-label>
             <x-input type="file" name="icon" class="block mt-1 w-full" id="icon"/>
         </div>

@@ -20,6 +20,7 @@ class SkillLinkController extends Controller
             $skill_link->skill_id = $skill_id;
             $skill_link->user_id = Auth::id();
             $skill_link->save();
+            return back();
         }
     }
 

@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased">
-        <div class="font-sans text-gray-900 dark:text-gray-100 antialiased">
+        <div class="font-sans text-gray-900 dark:text-gray-100 antialiased min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
